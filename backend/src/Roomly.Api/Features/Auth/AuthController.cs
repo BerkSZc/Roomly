@@ -11,7 +11,6 @@ namespace Roomly.Api.Features.Auth;
 
 [ApiController]
 [Route("api/auth")]
-[EnableRateLimiting(AuthRateLimiting.PolicyName)]
 public sealed class AuthController(
     AuthService service,
     IValidator<RegisterRequest> registerValidator,
@@ -20,6 +19,7 @@ public sealed class AuthController(
 {
     [HttpPost("register")]
     [AllowAnonymous]
+    [EnableRateLimiting(AuthRateLimiting.PolicyName)]
     public async Task<IActionResult> Register(RegisterRequest request, CancellationToken ct)
     {
         var validation = await registerValidator.ValidateAsync(request, ct);
@@ -34,6 +34,7 @@ public sealed class AuthController(
 
     [HttpPost("login")]
     [AllowAnonymous]
+    [EnableRateLimiting(AuthRateLimiting.PolicyName)]
     public async Task<IActionResult> Login(LoginRequest request, CancellationToken ct)
     {
         var validation = await loginValidator.ValidateAsync(request, ct);
@@ -47,6 +48,7 @@ public sealed class AuthController(
 
     [HttpPost("refresh")]
     [AllowAnonymous]
+    [EnableRateLimiting(AuthRateLimiting.PolicyName)]
     public async Task<IActionResult> Refresh(RefreshRequest request, CancellationToken ct)
     {
         var validation = await refreshValidator.ValidateAsync(request, ct);

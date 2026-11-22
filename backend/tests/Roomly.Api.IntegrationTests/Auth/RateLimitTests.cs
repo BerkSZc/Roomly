@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Json;
 using FluentAssertions;
 using Roomly.Api.IntegrationTests.Infrastructure;
 
@@ -23,5 +24,24 @@ public sealed class RateLimitTests(PostgresFixture fixture)
         statuses[10].Should().Be(HttpStatusCode.TooManyRequests);
         var last = await client.LoginAsync(AuthApi.UniqueEmail());
         (await last.ErrorCodeAsync()).Should().Be("RATE_LIMITED");
+    }
+
+    [Fact]
+    public async Task MeAndLogout_AreNotRateLimited_WhileLoginIs_SEC04()
+    {
+        // Aynı Wi-Fi'daki ev arkadaşları tek IP paylaşır; uygulama açılışındaki /me sınıra takılmamalı.
+        var client = ApiFactory.For(fixture, authPermitLimit: 1).CreateClient();
+        var auth = await client.RegisterOkAsync();
+
+        for (var i = 0; i < 5; i++)
+        {
+            (await client.MeAsync(auth.AccessToken)).StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        var logout = await client.PostAsJsonAsync("/api/auth/logout", new { refreshToken = auth.RefreshToken });
+        logout.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        var login = await client.LoginAsync(AuthApi.UniqueEmail());
+        login.StatusCode.Should().Be(HttpStatusCode.TooManyRequests);
     }
 }

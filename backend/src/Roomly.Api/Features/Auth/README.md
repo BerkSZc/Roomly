@@ -34,6 +34,6 @@ Sahip: Berk. Kayıt, giriş ve oturum (UC1). Şema [spec 0002](../../../../../do
 
 - Bütün uçlar varsayılan olarak oturum ister (fallback policy). Anonim uç `[AllowAnonymous]` ile açılır; sınıf düzeyinde `[AllowAnonymous]` aksiyondaki `[Authorize]`'ı ezer, bu yüzden aksiyon düzeyinde yazılır.
 - Korumalı uçta kullanıcı: `User.GetUserId()` (`Common/Auth`).
-- `/api/auth/*` IP başına dakikada 10 istek (`RateLimiting:Auth`), aşılınca 429 `RATE_LIMITED`.
+- `register`, `login` ve `refresh` IP başına dakikada 10 istek (`RateLimiting:Auth`, action düzeyinde `[EnableRateLimiting]`), aşılınca 429 `RATE_LIMITED`. `me` ve `logout` sınır dışı (aynı ağdaki ev arkadaşları tek IP paylaşır).
 - Loglarda e-posta `LogMask.Email`, token hiç yazılmaz (SEC-07).
 - Identity kilit zamanını `IClock`'tan değil kendi saatinden okur; testte `lockout_end` geçmişe çekilir.

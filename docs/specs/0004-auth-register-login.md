@@ -25,7 +25,7 @@ Scope #6, Tracer Bullet'ın ilk ince yolu: DB → API → Flutter. Spec 0001 ASP
 - **AC-3**: Kayıtlı bir e-postayla (büyük / küçük harf farkı gözetmeden) kayıt 409 `EMAIL_TAKEN` döner; aynı anda gelen iki kayıtta ikincisi de 409 alır (DB kısıtı `ux_asp_net_users_normalized_email` hata koduna çevrilir), 500 değil.
 - **AC-4**: `POST /api/auth/login` doğru e-posta ve şifreyle 200 ve token yanıtı döner, `access_failed_count` sıfırlanır. Yanlış şifre, kayıtsız e-posta ya da silinmiş (`deleted_at` dolu) kullanıcı aynı yanıtı alır: 401 `INVALID_CREDENTIALS`, "E-posta ya da şifre hatalı."
 - **AC-5** (SEC-01): Aynı hesaba art arda 5 yanlış şifre girilince 5. deneme ve kilit süresince her deneme (doğru şifreyle bile) 423 `ACCOUNT_LOCKED` döner; kilit 15 dakika sürer, süre bitince doğru şifreyle giriş başarılıdır.
-- **AC-6** (SEC-04): `/api/auth/*` uçlarına aynı IP'den bir dakikada 11. istek 429 `RATE_LIMITED` döner (`ProblemDetails`); sınır `RateLimiting:Auth:PermitLimit` (10) ve `WindowSeconds` (60) ayarından okunur.
+- **AC-6** (SEC-04): `register`, `login` ve `refresh` uçlarına aynı IP'den bir dakikada 11. istek 429 `RATE_LIMITED` döner (`ProblemDetails`); sınır `RateLimiting:Auth:PermitLimit` (10) ve `WindowSeconds` (60) ayarından okunur. `me` ve `logout` sınır dışıdır: aynı Wi-Fi'daki ev ve yurt arkadaşları tek IP paylaşır, uygulama açılışındaki `/me` onları 429'a düşürmemeli.
 - **AC-7** (SEC-01): Erişim anahtarı HS256 JWT'dir: `sub` = kullanıcı `Guid`'i, `jti`, `iss` = `Jwt:Issuer`, `aud` = `Jwt:Audience`, `exp` = `IClock.UtcNow + 15 dk`. Korumalı uçlar geçersiz, süresi dolmuş ya da eksik anahtarda 401 döner (saat kayması toleransı 30 sn).
 - **AC-8**: Refresh token 32 rastgele bayttır (base64url, 43 karakter); DB'de yalnızca SHA-256 özeti durur. Giriş ve kayıtta yeni `family_id` ile yazılır, `expires_at = created_at + 7 gün`.
 - **AC-9**: `POST /api/auth/refresh` geçerli refresh token ile yeni erişim ve refresh token döner; eski satıra `revoked_at` ve `replaced_by_id` yazılır, yeni satır aynı `family_id`'yi alır. Süresi dolmuş, bilinmeyen ya da silinmiş kullanıcıya ait token 401 `INVALID_REFRESH_TOKEN` döner.
@@ -174,7 +174,7 @@ Backend entegrasyon testleri `tests/Roomly.Api.IntegrationTests/Auth/` (`WebAppl
 - Aynı e-posta (farklı harf) → 409; paralel iki kayıt → biri 201 biri 409, verifies **AC-3**
 - Giriş doğru / yanlış / kayıtsız / silinmiş, verifies **AC-4**
 - 5 yanlış → 423; doğru şifre de 423; `lockout_end` geçmişe çekilince 200, verifies **AC-5** (`Login_AfterFiveFailures_LocksAccountUntilLockoutEnds_SEC01`)
-- Gerçek limitle 11. istek 429, verifies **AC-6** (`Auth_EleventhRequestInWindow_Returns429_SEC04`)
+- Gerçek limitle 11. istek 429, verifies **AC-6** (`Auth_EleventhRequestInWindow_Returns429_SEC04`); `me` ve `logout` sınıra takılmaz (`MeAndLogout_AreNotRateLimited_WhileLoginIs_SEC04`)
 - JWT claim'leri ve `FakeClock` ile `exp`; süresi dolmuş token ile `me` → 401, verifies **AC-7**
 - Refresh rotasyonu, süresi dolmuş token, yeniden kullanımda aile iptali, paralel iki refresh, verifies **AC-9**, **AC-10**
 - Logout → sonraki refresh 401; bilinmeyen token logout 204, verifies **AC-11**

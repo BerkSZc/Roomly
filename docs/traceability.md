@@ -49,7 +49,7 @@ Backend entegrasyon testleri `backend/tests/Roomly.Api.IntegrationTests/Auth/`, 
 | AUTH03 | Kayıtlı e-posta 409, paralel kayıtta da | 0004 AC-3 | `RegisterLoginTests.*_AUTH03` (2 test) |
 | AUTH04 | Giriş; yanlış, kayıtsız, silinmiş aynı 401 | 0004 AC-4 | `RegisterLoginTests.Login_*_AUTH04` (2 test) |
 | SEC-01 | JWT kimlik doğrulama, şifre politikası ve 5 hatalı deneme kilidi (15 dk) | 0004 AC-2, AC-5, AC-7 | `RegisterLoginTests.Login_AfterFiveFailures_LocksAccountUntilLockoutEnds_SEC01`; şifre politikası AUTH02, JWT AUTH07 testleri |
-| SEC-04 | `/api/auth/*` için IP başına dakikada 10 istek | 0004 AC-6 | `RateLimitTests.Auth_EleventhRequestInWindow_Returns429_SEC04` |
+| SEC-04 | login, register ve refresh için IP başına dakikada 10 istek (`/me` ve logout sınır dışı) | 0004 AC-6 | `RateLimitTests.Auth_EleventhRequestInWindow_Returns429_SEC04`, `RateLimitTests.MeAndLogout_AreNotRateLimited_WhileLoginIs_SEC04` |
 | AUTH07 | JWT claim'leri, 15 dk; geçersiz / süresi dolmuş 401 | 0004 AC-7 | `TokenTests.*_AUTH07` (2 test), `AuthUnitTests.JwtIssuer_*_AUTH07` |
 | AUTH08 | Refresh token 43 karakter, yalnızca özeti, 7 gün | 0004 AC-8 | `TokenTests.Register_StoresOnlyHashOfRefreshTokenWithSevenDayExpiry_AUTH08`, `AuthUnitTests.RefreshTokenGenerator_*_AUTH08` |
 | AUTH09 | Rotasyon aynı ailede; süresi dolmuş / bilinmeyen 401 | 0004 AC-9 | `TokenTests.Refresh_*_AUTH09` (2 test) |
