@@ -37,3 +37,28 @@ Widget testleri `mobile/test/core/design_system_test.dart` altında.
 | DS-06 | Hata ve boş durum görünümleri | 0003 AC-6 | `hata görünümü ... DS-06`, `boş görünüm ... DS-06` |
 | DS-07 | Hata snackbarı `colorScheme.error` | 0003 AC-7 | `hata snackbarı hata rengiyle gösterilir DS-07` |
 | DS-08 | Placeholder UC kodu ve sorumluyu gösterir | 0003 AC-8 | `placeholder ekranı UC kodu ve sorumluyu gösterir DS-08` |
+
+## Spec 0004 · Kayıt, giriş ve oturum (UC1)
+
+Backend entegrasyon testleri `backend/tests/Roomly.Api.IntegrationTests/Auth/`, unit testler `backend/tests/Roomly.Api.UnitTests/Features/Auth/`, mobil testler `mobile/test/core/` ve `mobile/test/features/auth/` altında.
+
+| ID | Gereksinim | Spec | Testler |
+|---|---|---|---|
+| AUTH01 | Kayıt 201, kullanıcı yazılır, `user_name = email` | [0004 AC-1](specs/0004-auth-register-login.md) | `RegisterLoginTests.Register_WithValidInput_Returns201AndStoresUser_AUTH01` |
+| AUTH02 | Kayıt doğrulaması (ad, e-posta, şifre kuralları) | 0004 AC-2 | `RegisterLoginTests.*_AUTH02` (5 durum), `AuthUnitTests.RegisterValidator_*_AUTH02` |
+| AUTH03 | Kayıtlı e-posta 409, paralel kayıtta da | 0004 AC-3 | `RegisterLoginTests.*_AUTH03` (2 test) |
+| AUTH04 | Giriş; yanlış, kayıtsız, silinmiş aynı 401 | 0004 AC-4 | `RegisterLoginTests.Login_*_AUTH04` (2 test) |
+| SEC-01 | JWT kimlik doğrulama, şifre politikası ve 5 hatalı deneme kilidi (15 dk) | 0004 AC-2, AC-5, AC-7 | `RegisterLoginTests.Login_AfterFiveFailures_LocksAccountUntilLockoutEnds_SEC01`; şifre politikası AUTH02, JWT AUTH07 testleri |
+| SEC-04 | `/api/auth/*` için IP başına dakikada 10 istek | 0004 AC-6 | `RateLimitTests.Auth_EleventhRequestInWindow_Returns429_SEC04` |
+| AUTH07 | JWT claim'leri, 15 dk; geçersiz / süresi dolmuş 401 | 0004 AC-7 | `TokenTests.*_AUTH07` (2 test), `AuthUnitTests.JwtIssuer_*_AUTH07` |
+| AUTH08 | Refresh token 43 karakter, yalnızca özeti, 7 gün | 0004 AC-8 | `TokenTests.Register_StoresOnlyHashOfRefreshTokenWithSevenDayExpiry_AUTH08`, `AuthUnitTests.RefreshTokenGenerator_*_AUTH08` |
+| AUTH09 | Rotasyon aynı ailede; süresi dolmuş / bilinmeyen 401 | 0004 AC-9 | `TokenTests.Refresh_*_AUTH09` (2 test) |
+| AUTH10 | Yeniden kullanımda aile iptali; paralelde tek başarı | 0004 AC-10 | `TokenTests.Refresh_*_AUTH10` (2 test) |
+| AUTH11 | Logout aileyi iptal eder, idempotent | 0004 AC-11 | `TokenTests.Logout_RevokesFamilyAndIsIdempotent_AUTH11` |
+| AUTH12 | `me` kullanıcı ve grup ya da `null` | 0004 AC-12 | `TokenTests.Me_ReturnsUserAndGroupOrNull_AUTH12` |
+| SEC-07 | Loglarda düz e-posta, şifre, token yok; anahtar doğrulaması | 0004 AC-13 | `RegisterLoginTests.AuthLogs_*_SEC07`, `AuthUnitTests.*_SEC07` |
+| SEC-05 | Token'lar yalnızca güvenli depoda; çıkışta silinir | 0004 AC-14 | `session_controller_test.dart` (`... SEC-05`, 2 test) |
+| AUTH-15 | Bearer, tek uçuşlu refresh, bir kez tekrar, oturum düşmesi | 0004 AC-15 | `auth_interceptor_test.dart` (5 test), `session_controller_test.dart` (1 test) |
+| AUTH-16 | Oturuma göre yönlendirme, açılışta geri yükleme | 0004 AC-16 | `session_redirect_test.dart` (5 test), `session_controller_test.dart` (3 test), `auth_screens_test.dart` (1 test) |
+| AUTH-17 | Giriş / kayıt ekranları, doğrulama ve hata mesajları | 0004 AC-17 | `auth_screens_test.dart` (6 test) |
+| AUTH-18 | Mock auth akışı | 0004 AC-18 | `session_controller_test.dart` (`mock repository`, 2 test) |

@@ -1,27 +1,21 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:roomly/app.dart';
-import 'package:roomly/core/config/app_config.dart';
+import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
+
+import 'support/fakes.dart';
 
 void main() {
-  testWidgets('mock modunda iskelet açılır ve sunucuyu hazır gösterir', (
+  testWidgets('mock modunda sistem durumu ekranı sunucuyu hazır gösterir', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          appConfigProvider.overrideWithValue(
-            const AppConfig(apiBaseUrl: 'http://unused', useMock: true),
-          ),
-        ],
-        child: const RoomlyApp(),
-      ),
-    );
+    await tester.pumpWidget(mockApp());
+    await tester.pumpAndSettle();
 
-    expect(find.text('Roomly'), findsOneWidget);
+    final context = tester.element(find.byType(Scaffold).first);
+    GoRouter.of(context).go('/system');
+    await tester.pumpAndSettle();
+
     expect(find.text('Mod: Mock veri'), findsOneWidget);
-
-    await tester.pump(const Duration(milliseconds: 400));
     expect(find.text('Sunucu hazır'), findsOneWidget);
   });
 }

@@ -18,7 +18,7 @@ _Bunlar düzenli ilerlemek için öneriler, zorunluluk değil. Bir özelliği na
 | 3 | Data model | Foundation | done |
 | 4 | Design system & UI foundation | Foundation | in-progress |
 | 5 | Local dev environment & demo data | Foundation | planned |
-| 6 | Kayıt ve giriş (UC1) | Slice 1 | planned |
+| 6 | Kayıt ve giriş (UC1) | Slice 1 | in-progress |
 | 7 | Dashboard iskeleti ve modül kaydı | Slice 2 | planned |
 | 8 | Davet koduyla katılım (UC3) | Slice 3 | planned |
 | 9 | Grup izolasyonu (SEC-03) | Slice 4 | planned |
@@ -74,10 +74,20 @@ Docker ile PostgreSQL (5433), Development ortamında otomatik migration ve seed 
 
 ## Slice 1: Kayıt ve giriş (tracer bullet)
 
-### 6. Kayıt ve giriş (UC1) · needs a decision
+### 6. Kayıt ve giriş (UC1) · in-progress
 İlk ince yol: kayıt, giriş, token'ların güvenli saklanması, otomatik yenileme, çıkış ve oturuma göre yönlendirme. Girişten sonra grubu olmayan kullanıcı "Alan Kur / Koda Katıl" ekranını görür.
-**Done when:** kullanıcı kayıt olup giriş yapabiliyor; 15 dk JWT ve 7 günlük rotasyonlu refresh çalışıyor; 5 hatalı denemede 15 dk kilit ve dakikada 10 istek limiti uygulanıyor; token'lar `flutter_secure_storage`'da; loglarda e-posta ve token maskeli (SEC-04, SEC-05, SEC-07).
-- [ ] Design it (spec): `/architect kayıt ve giriş`
+**Done when:** kullanıcı kayıt olup giriş yapabiliyor; 15 dk JWT ve 7 günlük rotasyonlu refresh çalışıyor; 5 hatalı denemede 15 dk kilit ve dakikada 10 istek limiti uygulanıyor; token'lar `flutter_secure_storage`'da; loglarda e-posta ve token maskeli (SEC-01, SEC-04, SEC-05, SEC-07).
+- [x] Design it (spec): `/architect kayıt ve giriş`
+- [x] Build it: `/develop kayıt ve giriş`
+  - [x] Backend: auth altyapısı, kayıt, giriş, kilit, `me` (AC-1 ile AC-5, AC-7, AC-8, AC-12)
+  - [x] Backend: refresh rotasyonu, logout, rate limit, log maskeleme ve testler (AC-6, AC-9 ile AC-11, AC-13)
+  - [x] Mobil: token deposu, interceptor, oturum ve yönlendirme (AC-14 ile AC-16, AC-18)
+  - [x] Mobil: giriş, kayıt, onboarding ekranları ve testler (AC-17)
+- [ ] Verify it: `/check verify kayıt ve giriş`
+- [ ] Test it: `/test kayıt ve giriş`
+- [ ] Review it (fresh model): `/check review kayıt ve giriş`
+- [ ] Document it: `/document kayıt ve giriş`
+Spec [0004](../specs/0004-auth-register-login.md) · code in `backend/src/Roomly.Api/Features/Auth/`, `mobile/lib/features/auth/`, `mobile/lib/core/{auth,network,storage,errors,router}/`
 
 ## Slice 2: Ekibin üzerine inşa edeceği iskelet
 

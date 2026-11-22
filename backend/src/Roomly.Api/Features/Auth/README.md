@@ -19,4 +19,21 @@ Sahip: Berk. Kayıt, giriş ve oturum (UC1). Şema [spec 0002](../../../../../do
 
 - `Microsoft.AspNetCore.Identity.EntityFrameworkCore` 8.0.34 ve `EFCore.NamingConventions` 8.0.3 (snake_case).
 - Adlandırma paketi açıkça verilmiş adları çevirmez: Identity'nin tablo adları (`AspNetUsers` vb.) ve iki index adı (`EmailIndex`, `UserNameIndex`) `AppUserConfiguration` ve `IdentityUserTablesConfiguration` içinde elle snake_case verilir.
-- Identity servis kaydı (`AddIdentityCore`) UC1 (#6) ile gelir.
+- Identity servis kaydı `AuthServiceCollectionExtensions.AddRoomlyAuth` içinde (spec 0004).
+- `Microsoft.AspNetCore.Authentication.JwtBearer` 8.0.34 ve `FluentValidation.DependencyInjectionExtensions` 11.11.0.
+
+## Uç noktalar (spec 0004)
+
+| Uç | Ne yapar |
+|---|---|
+| `POST /api/auth/register` | Kayıt + otomatik giriş (201). `EMAIL_TAKEN` 409 |
+| `POST /api/auth/login` | Giriş. `INVALID_CREDENTIALS` 401, `ACCOUNT_LOCKED` 423 (5 hata, 15 dk) |
+| `POST /api/auth/refresh` | Rotasyon; yeniden kullanımda aile iptali. `INVALID_REFRESH_TOKEN` 401 |
+| `POST /api/auth/logout` | Ailenin iptali, her zaman 204 |
+| `GET /api/auth/me` | Kullanıcı + açık grubu (`group` ya da `null`) |
+
+- Bütün uçlar varsayılan olarak oturum ister (fallback policy). Anonim uç `[AllowAnonymous]` ile açılır; sınıf düzeyinde `[AllowAnonymous]` aksiyondaki `[Authorize]`'ı ezer, bu yüzden aksiyon düzeyinde yazılır.
+- Korumalı uçta kullanıcı: `User.GetUserId()` (`Common/Auth`).
+- `/api/auth/*` IP başına dakikada 10 istek (`RateLimiting:Auth`), aşılınca 429 `RATE_LIMITED`.
+- Loglarda e-posta `LogMask.Email`, token hiç yazılmaz (SEC-07).
+- Identity kilit zamanını `IClock`'tan değil kendi saatinden okur; testte `lockout_end` geçmişe çekilir.

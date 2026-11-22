@@ -1,3 +1,5 @@
+using System.Text.Json;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Roomly.Api.Common.Errors;
@@ -11,6 +13,12 @@ public static class ValidationProblems
     /// <summary>FluentValidation sonuçları gibi alan hatalarından (alan → mesajlar).</summary>
     public static IActionResult FromErrors(IDictionary<string, string[]> errors) =>
         Create(new ValidationProblemDetails(errors));
+
+    /// <summary>FluentValidation sonucundan; alan adları camelCase (istek gövdesiyle aynı).</summary>
+    public static IActionResult FromValidation(ValidationResult result) =>
+        FromErrors(result.Errors
+            .GroupBy(e => JsonNamingPolicy.CamelCase.ConvertName(e.PropertyName))
+            .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).Distinct().ToArray()));
 
     private static ObjectResult Create(ValidationProblemDetails problem)
     {

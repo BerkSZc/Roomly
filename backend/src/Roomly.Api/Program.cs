@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Roomly.Api.Common.Errors;
 using Roomly.Api.Common.Time;
+using Roomly.Api.Features.Auth;
 using Roomly.Api.Infrastructure.Health;
 using Roomly.Api.Infrastructure.Persistence;
 
@@ -20,6 +21,9 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseRoomlyNpgsql(c
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
+// Kimlik doğrulama (spec 0004): Identity + JWT bearer, varsayılan olarak korumalı uçlar, auth rate limit.
+builder.Services.AddRoomlyAuth(builder.Configuration, builder.Environment);
 
 builder.Services
     .AddControllers()
@@ -61,9 +65,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+app.UseRateLimiter();
 app.UseAuthorization();
 
-app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthResponseWriter.WriteAsync });
+app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthResponseWriter.WriteAsync })
+    .AllowAnonymous();
 app.MapControllers();
 
 app.Run();
