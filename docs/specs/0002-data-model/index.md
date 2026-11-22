@@ -1,7 +1,7 @@
 # 0002. Kullanıcı, oturum, grup, üyelik ve davet kodu veri modeli
 
 **Date**: 2026-11-22
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

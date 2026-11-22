@@ -15,7 +15,7 @@ _Bunlar düzenli ilerlemek için öneriler, zorunluluk değil. Bir özelliği na
 |---|---------|-------|--------|
 | 1 | Stack & architecture | Foundation | done |
 | 2 | Coding standards & tooling | Foundation | done |
-| 3 | Data model | Foundation | in-progress |
+| 3 | Data model | Foundation | done |
 | 4 | Design system & UI foundation | Foundation | planned |
 | 5 | Local dev environment & demo data | Foundation | planned |
 | 6 | Kayıt ve giriş (UC1) | Slice 1 | planned |
@@ -40,7 +40,7 @@ Gerçek iskeletten kuralları çıkar (isimlendirme, test adının gereksinim ID
 **Done when:** kök `AGENTS.md` gerçek stack'i anlatıyor; `flutter analyze` ve `dotnet format` temiz geçiyor.
 - [x] Capture conventions + tooling choices: `/audit`
 
-### 3. Data model · in-progress
+### 3. Data model · done
 Kullanıcı (Identity, yalnızca görünen ad, e-posta, şifre hash'i), refresh token, en az alanlı grup, üyelik ve davet kodu. Berat'ın UC2 / UC10 alanlarını kırmadan ekleyebileceği şekilde.
 **Done when:** ilk migration temiz bir PostgreSQL'e uygulanıyor; `(group_id, user_id)` unique; davet kodu yalnızca SHA-256 hash olarak duruyor; grup başına tek aktif kod kuralı modellenmiş.
 - [x] Design it (spec): `/architect data model`
@@ -49,7 +49,7 @@ Kullanıcı (Identity, yalnızca görünen ad, e-posta, şifre hash'i), refresh 
   - [x] Auth ve Groups entity'leri, kurallar, hasher ve adlı kısıtlar (AC-3 ile AC-11, AC-13, AC-14)
   - [x] `InitialDataModel` migration'ı ve SQL incelemesi (AC-1, AC-2, AC-13, AC-14)
   - [x] Paylaşılan Postgres fixture'ı, kısıt ve yazma sırası testleri, traceability (AC-1 ile AC-14)
-- [ ] Verify it: `/check verify data model`
+- [x] Verify it: `/check verify data model`
 - [x] Test it: `/test data model`
 - [ ] Review it (fresh model): `/check review data model`
 - [ ] Document it: `/document data model`
