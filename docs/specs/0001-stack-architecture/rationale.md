@@ -4,7 +4,7 @@
 
 Roomly, Yazılım Kalite Standartları dersinin Faz 2 projesi. 7 kişilik ekip, her biri bir ya da iki use case'in sahibi (UC1 ile UC10 arası). Hedef platform Android (emülatör ve USB ile bağlı cihaz); iOS kapsam dışı. Ekip `main` dalını korumalı tutuyor ve herkes kendi modül klasöründe, kendi branch'inde çalışıyor; ortak dosyalar onaya bağlı.
 
-Kalite gereksinimleri teknoloji seçimini doğrudan etkiliyor: şifrelerin standart bir kütüphaneyle hash'lenmesi ve hatalı girişte kilit (SEC-04), token'ların güvenli saklanması (SEC-05), eşzamanlı katılımda kapasitenin aşılmaması için transaction ve satır kilidi (BND-01, TRG-02), zamanın test edilebilir bir saat arayüzünden okunması (BND-03), kişisel verinin en aza indirilmesi ve loglarda maskelenmesi (SEC-07, KVKK). Testler gerçek PostgreSQL üzerinde çalışmalı.
+Kalite gereksinimleri teknoloji seçimini doğrudan etkiliyor: şifrelerin standart bir kütüphaneyle hash'lenmesi ve hatalı girişte kilit (SEC-01), kimlik doğrulama isteklerinde hız sınırı (SEC-04), token'ların güvenli saklanması (SEC-05), eşzamanlı katılımda kapasitenin aşılmaması için transaction ve satır kilidi (BND-01, TRG-01), zamanın test edilebilir bir saat arayüzünden okunması (BND-03), kişisel verinin en aza indirilmesi ve loglarda maskelenmesi (SEC-07, KVKK). Testler gerçek PostgreSQL üzerinde çalışmalı.
 
 Geliştirme makinesinde yerel PostgreSQL yok, Docker Desktop var. .NET 8 SDK kurulu değil (SDK 9 ve 10 var, 8.0 runtime var). Flutter ve `adb` henüz PATH'te değil. Backend bitmeden mobil ekranların çalışabilmesi gerekiyor.
 

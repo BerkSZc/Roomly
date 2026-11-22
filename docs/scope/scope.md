@@ -144,7 +144,7 @@ Yönetici aktif kodu görür, paylaşır, iptal eder ya da yenisini üretir; yen
 
 ### 12. Hesap silme ve anonimleştirme (UC1)
 `DELETE /api/auth/me` ile kullanıcı hesabını siler; ad ve e-posta `DeletedUser_<Guid>` olarak anonimleştirilir, finansal geçmiş korunur. Auth spec'ine dayanır.
-**Done when:** silinen hesapla giriş yapılamıyor; kişisel veri tabloda kalmıyor; refresh token'lar iptal; yönetici silindiyse yöneticilik en eski üyeye geçiyor (SEC-07, TRG-01).
+**Done when:** silinen hesapla giriş yapılamıyor; kişisel veri tabloda kalmıyor; refresh token'lar iptal; yönetici silindiyse yöneticilik en eski üyeye geçiyor (SEC-07, TRG-02).
 - [ ] Build it: `/develop hesap silme ve anonimleştirme`
 
 ## Deferred

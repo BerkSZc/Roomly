@@ -37,7 +37,7 @@ dotnet format Roomly.sln --verify-no-changes
 - Servisler beklenen hatalar için exception atmaz, `Result<T>` döner. Hata yanıtı her zaman `ProblemDetails` + `extensions.code` (ör. `INVITE_EXPIRED`). Modüle özel kodlar o modülde bir sabit sınıfta durur; ortak olanlar `ErrorCodes`.
 - Doğrulama FluentValidation ile, validator controller'da açıkça çağrılır (otomatik doğrulama paketi yok); alan hataları `ValidationProblems.FromErrors`.
 - Rotalar `/api/...`, sürümleme yok. JSON camelCase, enum'lar string. Kimlikler `Guid`, zamanlar `DateTimeOffset` / `timestamptz` (UTC).
-- Kilit gereken sorgularda ham SQL (`FOR UPDATE`) ve transaction (BND-01, TRG-02).
+- Kilit gereken sorgularda ham SQL (`FOR UPDATE`) ve transaction (BND-01, TRG-01).
 - Entity kaydı: `IEntityTypeConfiguration<T>` kendi modül klasöründe; `AppDbContext`'e `DbSet` eklenmez, erişim `Set<T>()`. `groups` ve `asp_net_users`'a FK'ler `Restrict`.
 - DB adları snake_case. Index ve kısıt adları modülün `<Modul>DbNames` sabitlerinde durur ve `HasDatabaseName(...)` ile verilir; hata eşlemesi `PostgresException.ConstraintName`'i bu sabitlerle karşılaştırır.
 - Kısmi benzersiz index'e dokunan yazmalarda (tek yönetici, tek aktif kod) sıra zorunlu: grubu kilitle, önce bırakılan satırı `ExecuteUpdateAsync` ile güncelle, sonra yeni satırı `SaveChangesAsync` ile yaz, commit. Ayrıntı: `src/Roomly.Api/Features/Groups/README.md`.

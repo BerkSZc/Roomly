@@ -36,7 +36,7 @@ internal sealed class GroupMembershipConfiguration : IEntityTypeConfiguration<Gr
             .IsUnique()
             .HasFilter($"role = '{MembershipRole.Admin}'");
 
-        // TRG-01: en eski üye
+        // TRG-02: en eski üye
         builder.HasIndex(m => new { m.GroupId, m.JoinedAt }, GroupsDbNames.MembershipsGroupIdJoinedAtIndex)
             .HasDatabaseName(GroupsDbNames.MembershipsGroupIdJoinedAtIndex);
     }

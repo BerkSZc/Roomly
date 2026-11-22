@@ -4,7 +4,7 @@
 
 Roomly'nin ilk dilimleri (kayıt ve giriş, davet koduyla katılım, kod yönetimi, hesap silme) ve ekibin diğer modülleri (UC2 ile UC10) aynı kullanıcı ve grup tablolarına bağlanacak. Şema bir kez yayılınca değiştirmek pahalı: her modülün FK'leri, sorguları ve testleri ona dayanır. `AppDbContext` ve migration'lar ortak dosya, her değişiklik ekip onayı ister ve `ModelSnapshot` paralel branch'lerde çakışır.
 
-Kalite gereksinimleri şemayı doğrudan zorluyor: eşzamanlı katılımda kapasite aşılmamalı (BND-01, TRG-02), kapasite grup türüne göre sınırlı (BND-02: Ev 2 ile 20, Yurt 2 ile 6), zaman test edilebilir saatten okunmalı (BND-03), davet kodu yalnızca SHA-256 özeti olarak durmalı, grupta tek yönetici ve tek aktif kod olmalı, kişisel veri en azda tutulmalı ve hesap silmede anonimleştirilmeli (KVKK, SEC-07). Birden fazla aktif grup kapsam dışı.
+Kalite gereksinimleri şemayı doğrudan zorluyor: eşzamanlı katılımda kapasite aşılmamalı (BND-01, TRG-01), kapasite grup türüne göre sınırlı (BND-02: Ev 2 ile 20, Yurt 2 ile 6), zaman test edilebilir saatten okunmalı (BND-03), davet kodu yalnızca SHA-256 özeti olarak durmalı, grupta tek yönetici ve tek aktif kod olmalı, kişisel veri en azda tutulmalı ve hesap silmede anonimleştirilmeli (KVKK, SEC-07). Birden fazla aktif grup kapsam dışı.
 
 Ekip 7 kişilik bir ders ekibi; kurallar yalnızca servis kodunda kalırsa, bir modül sahibinin yazdığı sorgu ya da paralel bir istek kuralı kolayca delebilir. Davet kodunun yalnızca özet olarak saklanması, scope #10'daki "yönetici aktif kodu görür" beklentisiyle çelişiyordu; bu çelişki konuşmada çözüldü.
 
@@ -44,7 +44,7 @@ Yalnızca PK, FK ve `(group_id, user_id)` benzersizliği; tek grup, tek yönetic
 
 ## Rationale
 
-Option 1 seçildi çünkü bu projenin en riskli noktası eşzamanlılık ve çok kişili kod: BND-01 / TRG-02 testleri paralel istek atıyor ve 7 kişi aynı tablolara sorgu yazıyor. Kuralın veritabanında durması, servis hatasını "bozuk veri" yerine "23505 hatası"na çevirir. Option 2'nin kazandırdığı esneklik (migration'sız kural değişikliği) ders ölçeğinde nadiren gerekecek, kaybettirdiği güvence ise her gün gerekir. Option 3'ün geçmiş koruma faydası gereksiz: borç ve gider satırları kendi `user_id` ve `group_id`'sini taşıyor, üyelik satırını silmek geçmişi silmiyor.
+Option 1 seçildi çünkü bu projenin en riskli noktası eşzamanlılık ve çok kişili kod: BND-01 / TRG-01 testleri paralel istek atıyor ve 7 kişi aynı tablolara sorgu yazıyor. Kuralın veritabanında durması, servis hatasını "bozuk veri" yerine "23505 hatası"na çevirir. Option 2'nin kazandırdığı esneklik (migration'sız kural değişikliği) ders ölçeğinde nadiren gerekecek, kaybettirdiği güvence ise her gün gerekir. Option 3'ün geçmiş koruma faydası gereksiz: borç ve gider satırları kendi `user_id` ve `group_id`'sini taşıyor, üyelik satırını silmek geçmişi silmiyor.
 
 Kapasite önce serbest sayı olarak konuşuldu, sonra BND-02 gereğince türe bağlı aralığa düzeltildi; `type` sütunu bu yüzden etiket değil, kuralın girdisi. Davet kodunu görüntüleme için "yalnızca üretimde bir kez göster" seçildi, çünkü scope'un "yalnızca SHA-256 özeti" kuralını aynen korur; şifreli kopya saklamak bu kuralı bozardı, telefonda yerel kopya ise cihaz değişince kaybolurdu.
 

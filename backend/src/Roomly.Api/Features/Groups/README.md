@@ -28,7 +28,7 @@ PostgreSQL benzersiz index'i her satırda hemen kontrol eder; EF tek `SaveChange
 3. Sonra yeni satırı yaz (`SaveChangesAsync`): yeni kod ya da yeni yöneticinin `role = 'Admin'`'ı.
 4. Commit.
 
-Bu sıra davet kodu üretimi (#10), katılım (#8), yönetici devri (TRG-01) ve grup kapatma (UC10) için bağlayıcıdır. Örnek: `InviteCodeConstraintTests.RegenerateInviteCode_RevokeThenInsertInOneTransaction_Succeeds_DM08`.
+Bu sıra davet kodu üretimi (#10), katılım (#8), yönetici devri (TRG-02) ve grup kapatma (UC10) için bağlayıcıdır. Örnek: `InviteCodeConstraintTests.RegenerateInviteCode_RevokeThenInsertInOneTransaction_Succeeds_DM08`.
 
 ## Davet kodu
 

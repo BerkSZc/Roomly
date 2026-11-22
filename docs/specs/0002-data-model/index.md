@@ -100,7 +100,7 @@ Identity'nin `asp_net_user_claims`, `asp_net_user_logins`, `asp_net_user_tokens`
 | group_id | uuid | hayır | PK parçası; FK → `groups`, cascade |
 | user_id | uuid | hayır | PK parçası; FK → `asp_net_users`, restrict; benzersiz (tek grup) |
 | role | varchar(10) | hayır | check `role IN ('Admin', 'Member')`; kısmi benzersiz `(group_id) WHERE role = 'Admin'` |
-| joined_at | timestamptz | hayır | index `(group_id, joined_at)` (TRG-01 en eski üye) |
+| joined_at | timestamptz | hayır | index `(group_id, joined_at)` (TRG-02 en eski üye) |
 
 **invite_codes**
 
@@ -124,9 +124,9 @@ Adlar `Features/Auth/AuthDbNames` ve `Features/Groups/GroupsDbNames` sabit sın�
 |---|---|---|---|
 | `pk_group_memberships` | group_memberships | PK `(group_id, user_id)` | #8: `ALREADY_MEMBER` |
 | `ux_group_memberships_user_id` | group_memberships | benzersiz `user_id` | #8: başka grupta üye |
-| `ux_group_memberships_one_admin` | group_memberships | kısmi benzersiz `(group_id) WHERE role = 'Admin'` | UC2, TRG-01 |
+| `ux_group_memberships_one_admin` | group_memberships | kısmi benzersiz `(group_id) WHERE role = 'Admin'` | UC2, TRG-02 |
 | `ck_group_memberships_role` | group_memberships | `role IN ('Admin', 'Member')` | |
-| `ix_group_memberships_group_id_joined_at` | group_memberships | index | TRG-01 |
+| `ix_group_memberships_group_id_joined_at` | group_memberships | index | TRG-02 |
 | `ck_groups_capacity_by_type` | groups | BND-02 | UC2 |
 | `ux_invite_codes_one_active` | invite_codes | kısmi benzersiz `(group_id) WHERE revoked_at IS NULL` | #10 |
 | `ux_invite_codes_code_hash` | invite_codes | benzersiz `code_hash` | #10: üretimde çakışma, yeniden dene |
@@ -157,7 +157,7 @@ PostgreSQL benzersiz index'i her satırda hemen kontrol eder ve EF `SaveChanges`
 3. Sonra yeni satır yazılır (`SaveChangesAsync`): yeni kod `INSERT`; yeni yöneticinin `role = 'Admin'`.
 4. Commit.
 
-Bu sıra davet kodu üretimi (#10), katılım (#8), yönetici devri (TRG-01, #12 ve UC10) ve grup kapatma (UC10) için bağlayıcıdır.
+Bu sıra davet kodu üretimi (#10), katılım (#8), yönetici devri (TRG-02, #12 ve UC10) ve grup kapatma (UC10) için bağlayıcıdır.
 
 ### API surface
 
@@ -178,7 +178,7 @@ Sütunları sonraki özellikler yazar; her değerin kaynağı burada sabitlenir 
 | Grup oluşturma | kurucunun `role` | `Admin` (aynı transaction'da üyelik satırı) |
 | Katılım | yeni üyenin `role` | `Member` |
 | Katılım | doluluk | Kilitli grup satırı altında `count(*)` üyelik; `count < capacity` ise kabul (yönetici sayılır) |
-| Yönetici devri (TRG-01) | yeni yönetici | Kalan üyelerden `ORDER BY joined_at, user_id` ilk satır. Kalan üye yoksa grup kapatılır (UC10'da kesinleşir) |
+| Yönetici devri (TRG-02) | yeni yönetici | Kalan üyelerden `ORDER BY joined_at, user_id` ilk satır. Kalan üye yoksa grup kapatılır (UC10'da kesinleşir) |
 | Giriş | `family_id` | Yeni `Guid`; rotasyonda eski token'dan devralınır |
 | Giriş ve rotasyon | `token_hash` | Rastgele token'ın SHA-256'sı (üretim UC1 spec'inde) |
 | Giriş ve rotasyon | `expires_at` (refresh) | `created_at + RefreshTokenRules.Lifetime` (7 gün) |
@@ -196,7 +196,7 @@ Süresi dolmuş ya da iptal edilmiş refresh token ve davet kodu satırları şi
 | Kullanıcı en fazla bir gruptadır | `ux_group_memberships_user_id` |
 | `(group_id, user_id)` tekildir | `pk_group_memberships` |
 | Grupta en fazla bir yönetici | `ux_group_memberships_one_admin` |
-| Açık grupta en az bir yönetici | Servis kuralı (UC2 kurulum, TRG-01 devir); DB tutamaz |
+| Açık grupta en az bir yönetici | Servis kuralı (UC2 kurulum, TRG-02 devir); DB tutamaz |
 | Kapasite türe göre (BND-02) | `ck_groups_capacity_by_type` + `GroupCapacityRules` (validator aynı sabitleri okur) |
 | Üye sayısı kapasiteyi aşmaz (BND-01) | Katılımda grup satırına `FOR UPDATE`, sonra `count(*)`; üye sayısı sütunu saklanmaz |
 | Kapalı gruba katılım yok | Katılım kilitli satırda `closed_at IS NULL` kontrol eder; kapatma (UC10) aynı satır kilidini alır |
@@ -211,7 +211,7 @@ Check kısıtının SQL metni `GroupCapacityRules` sabitlerinden üretilir (sın
 
 - Kişisel veri (KVKK): yalnızca `display_name` ve `email` (`user_name` e-postanın kopyası). Telefon sütunları Identity şemasında kalır ama hiç yazılmaz. Hesap silmede kişisel veri taşıyan tüm sütunlar yeniden yazılır (Value sourcing).
 - Davet kodu ve refresh token yalnızca özet olarak durur. Refresh token rastgele ve uzun olduğundan özeti geri çevrilemez. Davet kodu kısa olduğu için tuzsuz SHA-256 özeti çevrimdışı deneme yanılmayla kırılabilir; koruma kodun uzunluğuna ve 48 saatlik ömrüne dayanır, en az uzunluk #8'de belirlenir. Demo kodu (`DEMO-ROOM-2026`) bilerek zayıftır ve yalnızca Development'ta vardır.
-- Şifre hash'i Identity'nin `PasswordHasher`'ı ile (SEC-04).
+- Şifre hash'i Identity'nin `PasswordHasher`'ı ile (SEC-01).
 - Grup verisine erişim kontrolü bu spec'te değil, grup izolasyonu özelliğinde (#9, SEC-03).
 - `EnableSensitiveDataLogging` kapalı kalır (SEC-07).
 

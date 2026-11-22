@@ -32,10 +32,10 @@ The commands assume `docker compose up -d --wait` is running and you are in `bac
 - [x] `GroupCapacityRules.CheckConstraintSql()` produces exactly the SQL in `ck_groups_capacity_by_type`; `IsValid` agrees with the DB at 1/2/20/21 (`Ev`) and 1/2/6/7 (`Yurt`) → group creation `capacity` row
 - [x] Write a row with a `DateTimeOffset` at offset 0, read it back → same instant, offset 0; no column fills in a time by itself → every `created_at` / `joined_at` / `revoked_at` / `closed_at` / `deleted_at` row (`IClock.UtcNow`)
 - [x] Founder `Admin` plus joiners `Member` in one group is accepted; a second `Admin` is not → role rows (group creation, join)
-- [x] `ix_group_memberships_group_id_joined_at` exists on `(group_id, joined_at)` → admin handover row (TRG-01 oldest member)
+- [x] `ix_group_memberships_group_id_joined_at` exists on `(group_id, joined_at)` → admin handover row (TRG-02 oldest member)
 - [x] Refresh tokens sharing a `family_id` and linked through `replaced_by_id` are stored; `ix_refresh_tokens_family_id` exists → `family_id` row (login and rotation)
 - [x] Anonymized values fit: `display_name`, `email`, `user_name` = `DeletedUser_<Guid>`, `password_hash` NULL, `deleted_at` set → accepted → account deletion row
-- [ ] Not yet testable here (the behavior arrives with later features): code validity check at join (#8), capacity count under lock (#8), new admin selection (TRG-01), login block for deleted users (#6). Re-run those rows when those features land.
+- [ ] Not yet testable here (the behavior arrives with later features): code validity check at join (#8), capacity count under lock (#8), new admin selection (TRG-02), login block for deleted users (#6). Re-run those rows when those features land.
 
 ## Acceptance-criteria coverage
 - AC-1: commands 1, 2, 5, 7 · AC-2: command 3 · AC-3 to AC-11: the matching database steps and command 7 · AC-12: last database step, command 5 · AC-13: command 4, value sourcing timestamp step · AC-14: command 3, every constraint step checks the name
