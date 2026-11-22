@@ -4,7 +4,9 @@ import 'package:roomly/app.dart';
 import 'package:roomly/core/config/app_config.dart';
 
 void main() {
-  testWidgets('mock modunda iskelet açılır ve sunucuyu hazır gösterir', (tester) async {
+  testWidgets('mock modunda iskelet açılır ve sunucuyu hazır gösterir', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [

@@ -14,7 +14,7 @@ _Bunlar düzenli ilerlemek için öneriler, zorunluluk değil. Bir özelliği na
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
 | 1 | Stack & architecture | Foundation | done |
-| 2 | Coding standards & tooling | Foundation | planned |
+| 2 | Coding standards & tooling | Foundation | done |
 | 3 | Data model | Foundation | planned |
 | 4 | Design system & UI foundation | Foundation | planned |
 | 5 | Local dev environment & demo data | Foundation | planned |
@@ -35,10 +35,10 @@ Kararlaştırılmış stack'i (Flutter + Riverpod + dio + go_router, ASP.NET Cor
 - [x] Scaffold from the decision: `/develop stack & architecture`
 Spec [0001](../specs/0001-stack-architecture/index.md) · code in `backend/`, `mobile/`
 
-### 2. Coding standards & tooling
+### 2. Coding standards & tooling · done
 Gerçek iskeletten kuralları çıkar (isimlendirme, test adının gereksinim ID'siyle bitmesi, commit kuralları, ortak dosya onayı), sonra lint ve format araçlarını kur.
 **Done when:** kök `AGENTS.md` gerçek stack'i anlatıyor; `flutter analyze` ve `dotnet format` temiz geçiyor.
-- [ ] Capture conventions + tooling choices: `/audit`
+- [x] Capture conventions + tooling choices: `/audit`
 
 ### 3. Data model · needs a decision
 Kullanıcı (Identity, yalnızca görünen ad, e-posta, şifre hash'i), refresh token, en az alanlı grup, üyelik ve davet kodu. Berat'ın UC2 / UC10 alanlarını kırmadan ekleyebileceği şekilde.

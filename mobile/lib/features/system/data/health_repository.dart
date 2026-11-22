@@ -9,10 +9,11 @@ class HealthStatus {
   const HealthStatus({required this.status, required this.checks});
 
   factory HealthStatus.fromJson(Map<String, dynamic> json) => HealthStatus(
-        status: json['status'] as String,
-        checks: (json['checks'] as Map<String, dynamic>? ?? const {})
-            .map((key, value) => MapEntry(key, value as String)),
-      );
+    status: json['status'] as String,
+    checks: (json['checks'] as Map<String, dynamic>? ?? const {}).map(
+      (key, value) => MapEntry(key, value as String),
+    ),
+  );
 
   final String status;
   final Map<String, String> checks;
@@ -29,7 +30,10 @@ class MockHealthRepository implements HealthRepository {
   @override
   Future<HealthStatus> check() async {
     await Future<void>.delayed(const Duration(milliseconds: 300));
-    return const HealthStatus(status: 'Healthy', checks: {'database': 'Healthy'});
+    return const HealthStatus(
+      status: 'Healthy',
+      checks: {'database': 'Healthy'},
+    );
   }
 }
 
