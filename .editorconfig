@@ -11,6 +11,10 @@ indent_size = 2
 [*.{cs,csx}]
 indent_size = 4
 
+# EF Core migration'ları üretilmiş koddur (CRLF ve BOM ile yazılır); dotnet format ve analizörler atlar
+[**/Migrations/*.cs]
+generated_code = true
+
 [*.{csproj,props,targets,sln}]
 indent_size = 2
 

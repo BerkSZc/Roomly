@@ -10,11 +10,11 @@ using Roomly.Api.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Veritabanı: EF Core + Npgsql. EnableSensitiveDataLogging bilerek kapalı (SEC-07).
+// Veritabanı: EF Core + Npgsql, snake_case adlar (spec 0002). EnableSensitiveDataLogging bilerek kapalı (SEC-07).
 var connectionString = builder.Configuration.GetConnectionString("Default")
     ?? throw new InvalidOperationException(
         "ConnectionStrings:Default tanımlı değil. user-secrets ya da ortam değişkeni ile verin.");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseRoomlyNpgsql(connectionString));
 
 // Ortak altyapı
 builder.Services.AddSingleton<IClock, SystemClock>();
