@@ -86,7 +86,7 @@ code in `backend/src/Roomly.Api/Infrastructure/Persistence/DevDataSeeder.cs`, `D
   - [x] Backend: refresh rotasyonu, logout, rate limit, log maskeleme ve testler (AC-6, AC-9 ile AC-11, AC-13)
   - [x] Mobil: token deposu, interceptor, oturum ve yönlendirme (AC-14 ile AC-16, AC-18)
   - [x] Mobil: giriş, kayıt, onboarding ekranları ve testler (AC-17)
-- [ ] Verify it: `/check verify kayıt ve giriş`
+- [x] Verify it: `/check verify kayıt ve giriş`
 - [ ] Test it: `/test kayıt ve giriş`
 - [ ] Review it (fresh model): `/check review kayıt ve giriş`
 - [ ] Document it: `/document kayıt ve giriş`
@@ -118,7 +118,7 @@ Kullanıcı tireli Base32 kodu girip gruba katılır. Kapasite, süre ve iptal k
   - [x] Backend: hata kodları, kilitli transaction, kurallar ve uç (AC-1 ile AC-10)
   - [x] Backend testleri: sınır zamanları, eşzamanlılık, HTTP (AC-1 ile AC-10)
   - [x] Mobil: katılım ekranı, mock, yönlendirme ve testler (AC-11 ile AC-13)
-- [ ] Verify it: `/check verify davet koduyla katılım`
+- [x] Verify it: `/check verify davet koduyla katılım`
 - [ ] Test it: `/test davet koduyla katılım`
 - [ ] Review it (fresh model): `/check review davet koduyla katılım`
 - [ ] Document it: `/document davet koduyla katılım`
