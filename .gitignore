@@ -1,0 +1,21 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+
+# Flutter / Dart (ayrıntılar mobile/.gitignore içinde)
+.dart_tool/
+build/
+
+# Ortam ve sırlar
+.env
+*.env.local
+
+# Editör ve işletim sistemi
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
