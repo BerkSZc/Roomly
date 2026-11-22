@@ -16,7 +16,7 @@ _Bunlar düzenli ilerlemek için öneriler, zorunluluk değil. Bir özelliği na
 | 1 | Stack & architecture | Foundation | done |
 | 2 | Coding standards & tooling | Foundation | done |
 | 3 | Data model | Foundation | done |
-| 4 | Design system & UI foundation | Foundation | planned |
+| 4 | Design system & UI foundation | Foundation | in-progress |
 | 5 | Local dev environment & demo data | Foundation | planned |
 | 6 | Kayıt ve giriş (UC1) | Slice 1 | planned |
 | 7 | Dashboard iskeleti ve modül kaydı | Slice 2 | planned |
@@ -55,10 +55,17 @@ Kullanıcı (Identity, yalnızca görünen ad, e-posta, şifre hash'i), refresh 
 - [ ] Document it: `/document data model`
 Spec [0002](../specs/0002-data-model/index.md) · code in `backend/src/Roomly.Api/Features/Auth/`, `backend/src/Roomly.Api/Features/Groups/`, `backend/src/Roomly.Api/Infrastructure/Persistence/`
 
-### 4. Design system & UI foundation · needs a decision · Beta
+### 4. Design system & UI foundation · in-progress · Beta
 Türkçe arayüz için tema, renk, tipografi, boşluk ve temel bileşenler (form alanı, buton, hata / boş / yükleniyor durumları, "Geliştirme Aşamasında" ekranı).
 **Done when:** `design.md` var; temel bileşenler auth ve katılım ekranlarında kullanılıyor; placeholder ekranı UC numarası ve sorumlu adını gösteriyor.
-- [ ] Design it (spec): `/architect design system & UI foundation`
+- [x] Design it (spec): `/architect design system & UI foundation`
+- [x] Build it: `/develop design system & UI foundation`
+  - [x] Tema ve token'lar (AC-1, AC-2, AC-3)
+  - [x] Form, buton, durum bileşenleri ve placeholder ekranı (AC-4 ile AC-8)
+  - [x] `design.md`, iskeletin geçişi ve testler (AC-9, AC-10)
+- [ ] Verify it: `/check verify design system & UI foundation`
+- [ ] Test it: `/test design system & UI foundation`
+Spec [0003](../specs/0003-design-system.md) · code in `mobile/lib/core/theme/`, `mobile/lib/core/widgets/`, `mobile/design.md`
 
 ### 5. Local dev environment & demo data
 Docker ile PostgreSQL (5433), Development ortamında otomatik migration ve seed (demo kullanıcılar, "Demo Ev" grubu, `DEMO-ROOM-2026` kodu), VS Code çalıştırma profilleri, emülatör (`10.0.2.2`) ve cihaz (`adb reverse`) bağlantısı. Kararları stack spec'inde ve data model spec'inde.
