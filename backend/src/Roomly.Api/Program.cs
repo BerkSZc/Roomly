@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Roomly.Api.Common.Errors;
 using Roomly.Api.Common.Time;
 using Roomly.Api.Features.Auth;
+using Roomly.Api.Features.Groups;
 using Roomly.Api.Infrastructure.Health;
 using Roomly.Api.Infrastructure.Persistence;
 
@@ -24,6 +25,9 @@ builder.Services.AddProblemDetails();
 
 // Kimlik doğrulama (spec 0004): Identity + JWT bearer, varsayılan olarak korumalı uçlar, auth rate limit.
 builder.Services.AddRoomlyAuth(builder.Configuration, builder.Environment);
+
+// Gruplar: davet koduyla katılım (spec 0006).
+builder.Services.AddRoomlyGroups(builder.Configuration);
 
 builder.Services
     .AddControllers()

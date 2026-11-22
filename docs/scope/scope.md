@@ -20,7 +20,7 @@ _Bunlar düzenli ilerlemek için öneriler, zorunluluk değil. Bir özelliği na
 | 5 | Local dev environment & demo data | Foundation | planned |
 | 6 | Kayıt ve giriş (UC1) | Slice 1 | in-progress |
 | 7 | Dashboard iskeleti ve modül kaydı | Slice 2 | in-progress |
-| 8 | Davet koduyla katılım (UC3) | Slice 3 | planned |
+| 8 | Davet koduyla katılım (UC3) | Slice 3 | in-progress |
 | 9 | Grup izolasyonu (SEC-03) | Slice 4 | planned |
 | 10 | Davet kodu yönetimi (UC3) | Slice 4 | planned |
 | 11 | Deep link ile katılım (UC3) | Slice 5 | planned |
@@ -107,10 +107,19 @@ Spec [0005](../specs/0005-dashboard-module-registry.md) · code in `mobile/lib/f
 
 ## Slice 3: Davet koduyla katılım
 
-### 8. Davet koduyla katılım (UC3) · needs a decision
+### 8. Davet koduyla katılım (UC3) · in-progress
 Kullanıcı tireli Base32 kodu girip gruba katılır. Kapasite, süre ve iptal kuralları backend'de kilitli bir transaction içinde kontrol edilir.
-**Done when:** geçerli kodla katılım başarılı; dolu grupta `CAPACITY_EXCEEDED`; tam 48. saatte kabul, 48 saat + 1 sn'de `INVITE_EXPIRED`; iptal edilmişte `INVITE_REVOKED`; yanlışta `INVITE_INVALID`; zaten üyede 409 `ALREADY_MEMBER` ve "Zaten bu grubun üyesisiniz" uyarısı; paralel isteklerde kapasite aşılmıyor (SEC-01, BND-01, BND-03, TRG-02).
-- [ ] Design it (spec): `/architect davet koduyla katılım`
+**Done when:** geçerli kodla katılım başarılı; dolu grupta `CAPACITY_EXCEEDED`; tam 48. saatte kabul, 48 saat + 1 sn'de `INVITE_EXPIRED`; iptal edilmişte `INVITE_REVOKED`; yanlışta `INVITE_INVALID`; zaten üyede 409 `ALREADY_MEMBER` ve "Zaten bu grubun üyesisiniz" uyarısı; paralel isteklerde kapasite aşılmıyor (BND-01, BND-03, TRG-01).
+- [x] Design it (spec): `/architect davet koduyla katılım`
+- [x] Build it: `/develop davet koduyla katılım`
+  - [x] Backend: hata kodları, kilitli transaction, kurallar ve uç (AC-1 ile AC-10)
+  - [x] Backend testleri: sınır zamanları, eşzamanlılık, HTTP (AC-1 ile AC-10)
+  - [x] Mobil: katılım ekranı, mock, yönlendirme ve testler (AC-11 ile AC-13)
+- [ ] Verify it: `/check verify davet koduyla katılım`
+- [ ] Test it: `/test davet koduyla katılım`
+- [ ] Review it (fresh model): `/check review davet koduyla katılım`
+- [ ] Document it: `/document davet koduyla katılım`
+Spec [0006](../specs/0006-join-with-invite-code.md) · code in `backend/src/Roomly.Api/Features/Groups/` (Join*), `mobile/lib/features/invites/`
 
 ## Slice 4: Grup güvenliği ve kod yönetimi
 

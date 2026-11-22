@@ -176,6 +176,21 @@ class MockAuthRepository implements AuthRepository {
     return user.toCurrentUser();
   }
 
+  /// Mock katılım (spec 0006) oturumdaki kullanıcıyı gruba yazar; sonraki `me` grubu döner.
+  Future<void> assignGroupToCurrentUser(GroupSummary group) async {
+    final tokens = await _storage.read();
+    final email = tokens?.accessToken.replaceFirst('mock-access:', '');
+    final user = _users[email];
+    if (user == null) return;
+    _users[user.email] = _MockUser(
+      id: user.id,
+      displayName: user.displayName,
+      email: user.email,
+      password: user.password,
+      group: group,
+    );
+  }
+
   @override
   Future<void> logout(String refreshToken) async {}
 

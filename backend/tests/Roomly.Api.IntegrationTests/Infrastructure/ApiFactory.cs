@@ -31,6 +31,7 @@ public sealed class ApiFactory(string connectionString, int authPermitLimit) : W
         builder.UseSetting("Jwt:SigningKey", TestSigningKey);
         builder.UseSetting("RateLimiting:Auth:PermitLimit", authPermitLimit.ToString());
         builder.UseSetting("RateLimiting:Auth:WindowSeconds", "60");
+        builder.UseSetting("RateLimiting:Join:PermitLimit", "100000");
         builder.ConfigureLogging(logging => logging.AddProvider(Logs));
     }
 

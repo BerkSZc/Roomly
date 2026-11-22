@@ -10,6 +10,7 @@ import '../../features/auth/presentation/splash_screen.dart';
 import '../../features/dashboard/presentation/dashboard_shell.dart';
 import '../../features/dashboard/presentation/home_screen.dart';
 import '../../features/dashboard/presentation/more_screen.dart';
+import '../../features/invites/presentation/join_screen.dart';
 import '../../features/space/presentation/create_space_screen.dart';
 import '../../features/system/presentation/system_status_screen.dart';
 import '../modules/app_module.dart';
@@ -63,12 +64,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: SessionRedirect.join,
-        builder: (context, state) => const UnderDevelopmentScreen(
-          title: 'Koda Katıl',
-          ucCode: 'UC3',
-          owner: 'Berk',
-          icon: Icons.vpn_key_outlined,
-        ),
+        builder: (context, state) =>
+            JoinScreen(initialCode: state.uri.queryParameters['code']),
       ),
       GoRoute(
         path: SessionRedirect.system,

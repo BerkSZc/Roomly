@@ -77,3 +77,22 @@ Testler `mobile/test/features/dashboard/dashboard_test.dart` ve `mobile/test/cor
 | DASH-6 | `AppModule` tanımı, yollar, modülün kendi ekranı ve kartı | 0005 AC-6 | `registry 8 modülü ... DASH-6`, `modülün kendi ekranı ... DASH-6` |
 | DASH-7 | Registry kuralları | 0005 AC-7 | `module_registry_test.dart` (`DASH-7`, 2 test) |
 | DASH-8 | Grupsuz kullanıcı modül rotasına giremez | 0005 AC-8 | `grupsuz kullanıcı modül rotasına giremez DASH-8` |
+
+## Spec 0006 · Davet koduyla katılım (UC3)
+
+Servis düzeyi entegrasyon testleri (gerçek Postgres + sahte saat) `backend/tests/Roomly.Api.IntegrationTests/Groups/JoinGroupServiceTests.cs`, HTTP testleri `JoinGroupEndpointTests.cs`, unit testler `backend/tests/Roomly.Api.UnitTests/Features/Groups/InviteCodeFormatTests.cs`, mobil testler `mobile/test/features/invites/join_test.dart`.
+
+| ID | Gereksinim | Spec | Testler |
+|---|---|---|---|
+| JOIN01 | Geçerli kodla üye olarak katılım, kod tekrar kullanılabilir | [0006 AC-1](specs/0006-join-with-invite-code.md) | `JoinGroupServiceTests.Join_WithValidCode_*_JOIN01`, `JoinGroupEndpointTests.Join_OverHttp_*_JOIN01` |
+| JOIN02 | Normalizasyon ve biçim kontrolü | 0006 AC-2 | `JoinGroupServiceTests.*_JOIN02` (4 durum), `InviteCodeFormatTests.*_JOIN02`, `join_test.dart` (`JOIN-2`) |
+| JOIN03 | Bilinmeyen ya da kapalı grup kodu `INVITE_INVALID` | 0006 AC-3 | `JoinGroupServiceTests.Join_WithUnknownCodeOrClosedGroup_*_JOIN03` |
+| BND-03 | Tam 48. saatte kabul, 48 saat + 1 sn'de `INVITE_EXPIRED` | 0006 AC-4 | `JoinGroupServiceTests.Join_AtExactlyFortyEightHours_Succeeds_BND03`, `Join_OneSecondAfterExpiry_ReturnsInviteExpired_BND03` |
+| JOIN05 | İptal edilmiş kod `INVITE_REVOKED`, süresi dolmuşa göre öncelikli | 0006 AC-5 | `JoinGroupServiceTests.Join_WithRevokedCode_*_JOIN05` |
+| JOIN06 | `ALREADY_MEMBER` (süre ve iptalden önce), `ALREADY_IN_GROUP` | 0006 AC-6, AC-9 | `JoinGroupServiceTests.*_JOIN06` (2 test) |
+| BND-01 | Dolu grupta `CAPACITY_EXCEEDED`; paralel katılımda kapasite aşılmaz | 0006 AC-7, AC-8 | `JoinGroupServiceTests.Join_WhenGroupIsFull_*_BND01`, `Join_ConcurrentRequests_NeverExceedCapacity_BND01` |
+| TRG-01 | Kurallar backend'de `FOR UPDATE` ile kilitli tek transaction içinde; yarışan istekler 500 vermez | 0006 AC-8 | `JoinGroupServiceTests.*_TRG01` (2 test), `Join_ConcurrentRequests_NeverExceedCapacity_BND01` |
+| JOIN10 | Rate limit, 401, hata gövdesinde `code`, düz kod loglanmaz | 0006 AC-10 | `JoinGroupEndpointTests.*_JOIN10` (3 test) |
+| JOIN-11 | Katılım ekranı: biçim, sunucu hatası, `?code=` | 0006 AC-11 | `join_test.dart` (`JOIN-11`, 3 test) |
+| JOIN-12 | Başarıda Ana Sayfa ve snackbar | 0006 AC-12 | `join_test.dart` (`JOIN-12`) |
+| JOIN-13 | Mock katılım kodları | 0006 AC-13 | `join_test.dart` (`mock katılım`, `JOIN-13`) |

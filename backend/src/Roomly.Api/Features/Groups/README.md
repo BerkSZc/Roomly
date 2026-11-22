@@ -39,3 +39,12 @@ Bu sıra davet kodu üretimi (#10), katılım (#8), yönetici devri (TRG-01) ve 
 ## Diğer modüller için
 
 `groups` ve `asp_net_users`'a FK'ler `Restrict` olmalı (kullanıcı silinmez, kapatılan grubun satırı kalır). Tablolar `IEntityTypeConfiguration` ile kendi klasöründe tanımlanır, `AppDbContext`'e `DbSet` eklenmez.
+
+## Davet koduyla katılım (spec 0006, Berk)
+
+- `POST /api/groups/join` (`JoinGroupController` → `JoinGroupService` → `JoinGroupRepository`).
+- Tek transaction: kodu özetle bul, grup satırını `FOR UPDATE` ile kilitle, kodu kilit altında tekrar oku, kuralları kontrol et, `count(*)` ile doluluğa bak, üyeliği ekle.
+- Hata önceliği: `INVITE_INVALID` (404) → `ALREADY_MEMBER` (409) → `INVITE_REVOKED` (410) → `INVITE_EXPIRED` (410) → `ALREADY_IN_GROUP` (409) → `CAPACITY_EXCEEDED` (409). Kodlar `GroupErrors`'ta.
+- Kod `InviteCodeHasher.Normalize` sonrası `InviteCodeFormat` (`^[A-Z0-9]{8,32}$`) ile kontrol edilir; katılımda kod tüketilmez.
+- Kod iptali ve üretimi (#10) ve grup kapatma (UC10) aynı grup kilidini almalı, aksi halde katılımla yarışır.
+- Kullanıcı başına dakikada 10 deneme (`RateLimiting:Join`). Düz kod loglanmaz.
