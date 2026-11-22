@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:roomly/app.dart';
 import 'package:roomly/core/config/app_config.dart';
@@ -57,3 +58,13 @@ Widget mockApp({TokenStorage? storage, List overrides = const []}) =>
       ],
       child: const RoomlyApp(),
     );
+
+/// Tembel listede öğeyi görünene kadar kaydırıp dokunur.
+Future<void> scrollAndTap(WidgetTester tester, Finder finder) async {
+  await tester.scrollUntilVisible(
+    finder,
+    150,
+    scrollable: find.byType(Scrollable).first,
+  );
+  await tester.tap(finder);
+}

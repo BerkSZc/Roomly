@@ -19,7 +19,7 @@ _Bunlar düzenli ilerlemek için öneriler, zorunluluk değil. Bir özelliği na
 | 4 | Design system & UI foundation | Foundation | in-progress |
 | 5 | Local dev environment & demo data | Foundation | planned |
 | 6 | Kayıt ve giriş (UC1) | Slice 1 | in-progress |
-| 7 | Dashboard iskeleti ve modül kaydı | Slice 2 | planned |
+| 7 | Dashboard iskeleti ve modül kaydı | Slice 2 | in-progress |
 | 8 | Davet koduyla katılım (UC3) | Slice 3 | planned |
 | 9 | Grup izolasyonu (SEC-03) | Slice 4 | planned |
 | 10 | Davet kodu yönetimi (UC3) | Slice 4 | planned |
@@ -91,10 +91,19 @@ Spec [0004](../specs/0004-auth-register-login.md) · code in `backend/src/Roomly
 
 ## Slice 2: Ekibin üzerine inşa edeceği iskelet
 
-### 7. Dashboard iskeleti ve modül kaydı · needs a decision
+### 7. Dashboard iskeleti ve modül kaydı · in-progress
 Giriş sonrası alt sekmeli ana ekran ve her modülün kendi rotasını ve dashboard kartını kendi klasöründen kaydettiği yapı. UC2, UC4–UC10 için placeholder ekranlar.
 **Done when:** aktif grubu olan kullanıcı doğrudan dashboard'a düşüyor; 8 placeholder ekranına menüden gidilebiliyor; bir ekip arkadaşı yalnızca kendi `features/<modul>/` klasörünü değiştirerek placeholder'ını gerçek ekranla değiştirebiliyor.
-- [ ] Design it (spec): `/architect dashboard iskeleti ve modül kaydı`
+- [x] Design it (spec): `/architect dashboard iskeleti ve modül kaydı`
+- [x] Build it: `/develop dashboard iskeleti ve modül kaydı`
+  - [x] Modül tanımı, registry ve 8 modül dosyası (AC-5, AC-6, AC-7, AC-9)
+  - [x] Kabuk, Ana Sayfa, Diğer ve router (AC-1 ile AC-5, AC-8)
+  - [x] Testler ve modül ekleme rehberi (AC-1 ile AC-9)
+- [ ] Verify it: `/check verify dashboard iskeleti ve modül kaydı`
+- [ ] Test it: `/test dashboard iskeleti ve modül kaydı`
+- [ ] Review it (fresh model): `/check review dashboard iskeleti ve modül kaydı`
+- [ ] Document it: `/document dashboard iskeleti ve modül kaydı`
+Spec [0005](../specs/0005-dashboard-module-registry.md) · code in `mobile/lib/features/dashboard/`, `mobile/lib/core/modules/`, `mobile/lib/features/<modul>/<modul>_module.dart`
 
 ## Slice 3: Davet koduyla katılım
 

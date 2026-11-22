@@ -62,3 +62,18 @@ Backend entegrasyon testleri `backend/tests/Roomly.Api.IntegrationTests/Auth/`, 
 | AUTH-16 | Oturuma göre yönlendirme, açılışta geri yükleme | 0004 AC-16 | `session_redirect_test.dart` (5 test), `session_controller_test.dart` (3 test), `auth_screens_test.dart` (1 test) |
 | AUTH-17 | Giriş / kayıt ekranları, doğrulama ve hata mesajları | 0004 AC-17 | `auth_screens_test.dart` (6 test) |
 | AUTH-18 | Mock auth akışı | 0004 AC-18 | `session_controller_test.dart` (`mock repository`, 2 test) |
+
+## Spec 0005 · Dashboard iskeleti ve modül kaydı
+
+Testler `mobile/test/features/dashboard/dashboard_test.dart` ve `mobile/test/core/module_registry_test.dart` altında.
+
+| ID | Gereksinim | Spec | Testler |
+|---|---|---|---|
+| DASH-1 | Gruplu kullanıcı Ana Sayfa'da grup adı, tür, rol | [0005 AC-1](specs/0005-dashboard-module-registry.md) | `gruplu kullanıcı açılışta ... DASH-1` |
+| DASH-2 | Alt bar 5 sekme, sekme durumu korunur | 0005 AC-2 | `alt bar 5 sekme ... DASH-2`, `sekmeler kendi gezinme durumunu korur DASH-2` |
+| DASH-3 | Diğer: profil, 5 modül, sistem durumu, çıkış | 0005 AC-3 | `Diğer profil ... DASH-3` |
+| DASH-4 | Ana Sayfa'da 8 kart, dokununca modül | 0005 AC-4 | `Ana Sayfa da 8 modül kartı ... DASH-4` |
+| DASH-5 | Her placeholder rotası açılır | 0005 AC-5 | `her placeholder rotası açılır DASH-5` |
+| DASH-6 | `AppModule` tanımı, yollar, modülün kendi ekranı ve kartı | 0005 AC-6 | `registry 8 modülü ... DASH-6`, `modülün kendi ekranı ... DASH-6` |
+| DASH-7 | Registry kuralları | 0005 AC-7 | `module_registry_test.dart` (`DASH-7`, 2 test) |
+| DASH-8 | Grupsuz kullanıcı modül rotasına giremez | 0005 AC-8 | `grupsuz kullanıcı modül rotasına giremez DASH-8` |

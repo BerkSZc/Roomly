@@ -7,15 +7,29 @@ import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/onboarding_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
 import '../../features/auth/presentation/splash_screen.dart';
-import '../../features/auth/presentation/temporary_home_screen.dart';
+import '../../features/dashboard/presentation/dashboard_shell.dart';
+import '../../features/dashboard/presentation/home_screen.dart';
+import '../../features/dashboard/presentation/more_screen.dart';
+import '../../features/space/presentation/create_space_screen.dart';
 import '../../features/system/presentation/system_status_screen.dart';
+import '../modules/app_module.dart';
+import '../modules/module_registry.dart';
 import '../widgets/under_development_screen.dart';
 import 'session_redirect.dart';
 
-/// Uygulamanın tek router'ı. Oturum değişince `redirect` yeniden çalışır (spec 0004 AC-16).
+/// Uygulamanın tek router'ı. Oturum değişince `redirect` yeniden çalışır (spec 0004 AC-16);
+/// dashboard sekmeleri ve modül rotaları registry'den üretilir (spec 0005).
 final routerProvider = Provider<GoRouter>((ref) {
+  final modules = ref.watch(appModulesProvider);
   final sessionChanges = ValueNotifier<int>(0);
   ref.listen(sessionControllerProvider, (_, _) => sessionChanges.value++);
+
+  final tabModules = modules
+      .where((m) => m.placement == ModulePlacement.tab)
+      .toList();
+  final moreModules = modules
+      .where((m) => m.placement == ModulePlacement.more)
+      .toList();
 
   final router = GoRouter(
     initialLocation: SessionRedirect.splash,
@@ -43,12 +57,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: 'create-group',
-            builder: (context, state) => const UnderDevelopmentScreen(
-              title: 'Alan Kur',
-              ucCode: 'UC2',
-              owner: 'Berat',
-              icon: Icons.add_home_outlined,
-            ),
+            builder: (context, state) => const CreateSpaceScreen(),
           ),
         ],
       ),
@@ -62,12 +71,36 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ),
       GoRoute(
-        path: SessionRedirect.home,
-        builder: (context, state) => const TemporaryHomeScreen(),
-      ),
-      GoRoute(
         path: SessionRedirect.system,
         builder: (context, state) => const SystemStatusScreen(),
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, shell) =>
+            DashboardShell(navigationShell: shell, tabModules: tabModules),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: SessionRedirect.home,
+                builder: (context, state) => const HomeScreen(),
+              ),
+            ],
+          ),
+          for (final module in tabModules)
+            StatefulShellBranch(routes: [_moduleRoute(module, module.path)]),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/more',
+                builder: (context, state) => const MoreScreen(),
+                routes: [
+                  for (final module in moreModules)
+                    _moduleRoute(module, module.id),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );
@@ -77,3 +110,16 @@ final routerProvider = Provider<GoRouter>((ref) {
   });
   return router;
 });
+
+GoRoute _moduleRoute(AppModule module, String path) => GoRoute(
+  path: path,
+  builder: (context, state) =>
+      module.screenBuilder?.call(context) ??
+      UnderDevelopmentScreen(
+        title: module.title,
+        ucCode: module.ucCode,
+        owner: module.owner,
+        icon: module.icon,
+      ),
+  routes: module.routes,
+);

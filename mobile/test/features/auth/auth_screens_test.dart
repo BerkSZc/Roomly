@@ -65,7 +65,9 @@ void main() {
     expect(find.text('Demo Ev'), findsOneWidget);
     expect(await storage.read(), isNotNull);
 
-    await tester.tap(find.byTooltip('Çıkış yap'));
+    await tester.tap(find.text('Diğer'));
+    await _settle(tester);
+    await scrollAndTap(tester, find.text('Çıkış yap'));
     await _settle(tester);
 
     expect(find.text('Giriş yap'), findsOneWidget);
