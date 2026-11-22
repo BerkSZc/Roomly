@@ -193,4 +193,4 @@ Tracer Bullet'ın üçüncü dilimi: UC1'in açtığı "grubu yok → onboarding
 
 - [ ] Davet kodu yönetimi (#10): kod üretiminde aynı `InviteCodeFormat` deseni ve 12 karakterlik Base32 (`XXXX-XXXX-XXXX`); iptal ve üretim aynı grup kilidini alır.
 - [ ] Deep link (#11): `roomly://join?code=...` → `/join?code=...`; ekran `initialCode`'u zaten kabul ediyor.
-- [ ] Yerel ortam (#5): `DEMO-ROOM-2026` gerçek API'de seed edilene kadar gerçek modda katılım için kodu elle eklemek gerekir.
+- [x] Yerel ortam (#5): `DEMO-ROOM-2026` Development seed'inde ("Demo Ev", yönetici `demo@roomly.app`).

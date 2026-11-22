@@ -221,5 +221,5 @@ Tracer Bullet: önce bir kullanıcının kayıt olup `me` çağırabildiği en i
 
 ## Follow-up
 
-- [ ] Yerel ortam (#5): demo kullanıcıları gerçek API'de de `demo@roomly.app` / `Demo1234` ile seed et (mock ile aynı).
+- [x] Yerel ortam (#5): demo kullanıcıları gerçek API'de de `demo@roomly.app` / `Demo1234` ile seed et (mock ile aynı).
 - [ ] `backend/AGENTS.md`: fallback policy ve `[AllowAnonymous]`, `User.GetUserId()` (`/sync`).

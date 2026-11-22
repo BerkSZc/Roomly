@@ -96,3 +96,12 @@ Servis düzeyi entegrasyon testleri (gerçek Postgres + sahte saat) `backend/tes
 | JOIN-11 | Katılım ekranı: biçim, sunucu hatası, `?code=` | 0006 AC-11 | `join_test.dart` (`JOIN-11`, 3 test) |
 | JOIN-12 | Başarıda Ana Sayfa ve snackbar | 0006 AC-12 | `join_test.dart` (`JOIN-12`) |
 | JOIN-13 | Mock katılım kodları | 0006 AC-13 | `join_test.dart` (`mock katılım`, `JOIN-13`) |
+
+## Scope #5 · Yerel ortam ve demo veri
+
+Entegrasyon testleri `backend/tests/Roomly.Api.IntegrationTests/DevSeed/DevDataSeederTests.cs` altında. Kararlar spec 0001 (Yerel geliştirme, Seed) ve spec 0002 (Follow-up).
+
+| ID | Gereksinim | Spec | Testler |
+|---|---|---|---|
+| SEED01 | Seed tekrar çalışınca demo yönetici, grup ve kod bir kez oluşur; kod biçimi kontrol edilir | [0001 Seed](specs/0001-stack-architecture/index.md) | `DevDataSeederTests.*_SEED01` (2 test) |
+| SEED02 | Demo yönetici giriş yapabilir, yeni kullanıcı demo kodla katılabilir | 0001 Seed | `DevDataSeederTests.Seed_AdminCanLogInAndNewUserCanJoinWithSeededCode_SEED02` |

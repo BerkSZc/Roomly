@@ -29,6 +29,9 @@ builder.Services.AddRoomlyAuth(builder.Configuration, builder.Environment);
 // Gruplar: davet koduyla katılım (spec 0006).
 builder.Services.AddRoomlyGroups(builder.Configuration);
 
+// Development seed: demo kullanıcı, demo grup, DEMO-ROOM-2026 (yalnızca Development'ta çalışır).
+builder.Services.AddDevDataSeeding(builder.Configuration);
+
 builder.Services
     .AddControllers()
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -65,6 +68,7 @@ app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
+    await app.InitializeDevelopmentDatabaseAsync();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -77,7 +81,7 @@ app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthR
     .AllowAnonymous();
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
 
 // WebApplicationFactory<Program> için (entegrasyon testleri)
 public partial class Program;

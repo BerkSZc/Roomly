@@ -17,7 +17,7 @@ _Bunlar düzenli ilerlemek için öneriler, zorunluluk değil. Bir özelliği na
 | 2 | Coding standards & tooling | Foundation | done |
 | 3 | Data model | Foundation | done |
 | 4 | Design system & UI foundation | Foundation | in-progress |
-| 5 | Local dev environment & demo data | Foundation | planned |
+| 5 | Local dev environment & demo data | Foundation | in-progress |
 | 6 | Kayıt ve giriş (UC1) | Slice 1 | in-progress |
 | 7 | Dashboard iskeleti ve modül kaydı | Slice 2 | in-progress |
 | 8 | Davet koduyla katılım (UC3) | Slice 3 | in-progress |
@@ -67,10 +67,13 @@ Türkçe arayüz için tema, renk, tipografi, boşluk ve temel bileşenler (form
 - [ ] Test it: `/test design system & UI foundation`
 Spec [0003](../specs/0003-design-system.md) · code in `mobile/lib/core/theme/`, `mobile/lib/core/widgets/`, `mobile/design.md`
 
-### 5. Local dev environment & demo data
+### 5. Local dev environment & demo data · in-progress
 Docker ile PostgreSQL (5433), Development ortamında otomatik migration ve seed (demo kullanıcılar, "Demo Ev" grubu, `DEMO-ROOM-2026` kodu), VS Code çalıştırma profilleri, emülatör (`10.0.2.2`) ve cihaz (`adb reverse`) bağlantısı. Kararları stack spec'inde ve data model spec'inde.
 **Done when:** `docker compose up -d` ve `dotnet run` sonrası demo hesapla giriş yapılabiliyor; seed tekrar çalışınca kopya veri basmıyor; debug derlemede HTTP'ye izin var, release derlemede yok.
 - [ ] Build it: `/develop local dev environment & demo data`
+  - [x] Development'ta otomatik migration ve idempotent seed: demo yönetici `demo@roomly.app` / `Demo1234`, "Demo Ev" grubu, `DEMO-ROOM-2026` kodu
+  - [ ] VS Code çalıştırma profilleri, debug / release ağ ayarlarının doğrulanması
+code in `backend/src/Roomly.Api/Infrastructure/Persistence/DevDataSeeder.cs`, `DevelopmentDatabaseExtensions.cs`
 
 ## Slice 1: Kayıt ve giriş (tracer bullet)
 
