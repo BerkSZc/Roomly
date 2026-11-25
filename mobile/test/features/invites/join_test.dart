@@ -30,7 +30,7 @@ Future<void> _openJoin(WidgetTester tester, {String path = '/join'}) async {
     find.widgetWithText(TextFormField, 'Şifre'),
     'Sifre123',
   );
-  await tester.tap(find.widgetWithText(FilledButton, 'Kayıt ol'));
+  await tester.tap(find.widgetWithText(FilledButton, 'KAYIT OL'));
   await _settle(tester);
   GoRouter.of(tester.element(find.text('Koda Katıl'))).go(path);
   await _settle(tester);

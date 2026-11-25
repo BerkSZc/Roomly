@@ -29,14 +29,15 @@ Widget testleri `mobile/test/core/design_system_test.dart` altında.
 
 | ID | Gereksinim | Spec | Testler |
 |---|---|---|---|
-| DS-01 | Açık ve koyu tema seed `#00796B`'den, Material 3 | [0003 AC-1](specs/0003-design-system.md) | `açık ve koyu tema seed renginden türetilir DS-01` |
+| DS-01 | Açık ve koyu tema seed `#1F2E23`'ten, marka rolleri (zemin, mürekkep, lime), Material 3 | [0003 AC-1](specs/0003-design-system.md) | `açık ve koyu tema seed ve marka renklerinden türetilir DS-01` |
 | DS-02 | `AppSpacing` ve `AppRadius` değerleri | 0003 AC-2 | `boşluk ve köşe tokenları sabit değerlerdedir DS-02` |
 | DS-03 | Düğme 48 dp, dolgulu alan, gölgesiz kart, floating snackbar | 0003 AC-3 | `düğme, alan ve kart temaları token kullanır DS-03` |
-| DS-04 | Şifre alanı göster / gizle düğmesi ve etiketi | 0003 AC-4 | `şifre alanı göster düğmesiyle görünür olur DS-04` |
+| DS-04 | Şifre alanı göster / gizle düğmesi ve etiketi | 0003 AC-4 | `şifre alanı göster düğmesiyle görünür olur DS-04`, `alan önek ikonu ve içte kalan etiketle çizilir DS-04` |
 | DS-05 | Yükleniyorken düğme gösterge gösterir, dokunuş yok | 0003 AC-5 | `yükleniyorken düğme ... DS-05` |
 | DS-06 | Hata ve boş durum görünümleri | 0003 AC-6 | `hata görünümü ... DS-06`, `boş görünüm ... DS-06` |
 | DS-07 | Hata snackbarı `colorScheme.error` | 0003 AC-7 | `hata snackbarı hata rengiyle gösterilir DS-07` |
 | DS-08 | Placeholder UC kodu ve sorumluyu gösterir | 0003 AC-8 | `placeholder ekranı UC kodu ve sorumluyu gösterir DS-08` |
+| DS-09 | Marka başlığı: logo, ROOMLY, lime alt başlık | 0003 AC-11 | `marka başlığı logo, ROOMLY ve alt başlığı gösterir DS-09` |
 
 ## Spec 0004 · Kayıt, giriş ve oturum (UC1)
 
@@ -60,7 +61,7 @@ Backend entegrasyon testleri `backend/tests/Roomly.Api.IntegrationTests/Auth/`, 
 | SEC-05 | Token'lar yalnızca güvenli depoda; çıkışta silinir | 0004 AC-14 | `session_controller_test.dart` (`... SEC-05`, 2 test) |
 | AUTH-15 | Bearer, tek uçuşlu refresh, bir kez tekrar, oturum düşmesi | 0004 AC-15 | `auth_interceptor_test.dart` (5 test), `session_controller_test.dart` (1 test) |
 | AUTH-16 | Oturuma göre yönlendirme, açılışta geri yükleme | 0004 AC-16 | `session_redirect_test.dart` (5 test), `session_controller_test.dart` (3 test), `auth_screens_test.dart` (1 test) |
-| AUTH-17 | Giriş / kayıt ekranları, doğrulama ve hata mesajları | 0004 AC-17 | `auth_screens_test.dart` (6 test) |
+| AUTH-17 | Giriş / kayıt ekranları, doğrulama ve hata mesajları | 0004 AC-17 | `auth_screens_test.dart` (7 test) |
 | AUTH-18 | Mock auth akışı | 0004 AC-18 | `session_controller_test.dart` (`mock repository`, 2 test) |
 
 ## Spec 0005 · Dashboard iskeleti ve modül kaydı

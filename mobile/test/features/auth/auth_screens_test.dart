@@ -20,7 +20,7 @@ void main() {
     await tester.pumpWidget(mockApp());
     await _settle(tester);
 
-    expect(find.text('Giriş yap'), findsOneWidget);
+    expect(find.text('GİRİŞ YAP'), findsOneWidget);
   });
 
   testWidgets('boş formda istemci doğrulama mesajları görünür AUTH-17', (
@@ -29,7 +29,7 @@ void main() {
     await tester.pumpWidget(mockApp());
     await _settle(tester);
 
-    await tester.tap(find.text('Giriş yap'));
+    await tester.tap(find.text('GİRİŞ YAP'));
     await tester.pump();
 
     expect(find.text('E-posta zorunludur.'), findsOneWidget);
@@ -44,7 +44,7 @@ void main() {
 
     await _fill(tester, 'E-posta', 'demo@roomly.app');
     await _fill(tester, 'Şifre', 'Yanlis123');
-    await tester.tap(find.text('Giriş yap'));
+    await tester.tap(find.text('GİRİŞ YAP'));
     await _settle(tester);
 
     expect(find.text('E-posta ya da şifre hatalı.'), findsOneWidget);
@@ -59,7 +59,7 @@ void main() {
 
     await _fill(tester, 'E-posta', 'demo@roomly.app');
     await _fill(tester, 'Şifre', 'Demo1234');
-    await tester.tap(find.text('Giriş yap'));
+    await tester.tap(find.text('GİRİŞ YAP'));
     await _settle(tester);
 
     expect(find.text('Demo Ev'), findsOneWidget);
@@ -70,7 +70,7 @@ void main() {
     await scrollAndTap(tester, find.text('Çıkış yap'));
     await _settle(tester);
 
-    expect(find.text('Giriş yap'), findsOneWidget);
+    expect(find.text('GİRİŞ YAP'), findsOneWidget);
     expect(await storage.read(), isNull);
   });
 
@@ -85,7 +85,7 @@ void main() {
     await _fill(tester, 'Ad', 'Berk');
     await _fill(tester, 'E-posta', 'berk@test.local');
     await _fill(tester, 'Şifre', 'Sifre123');
-    await tester.tap(find.widgetWithText(FilledButton, 'Kayıt ol'));
+    await tester.tap(find.widgetWithText(FilledButton, 'KAYIT OL'));
     await _settle(tester);
 
     expect(find.text('Merhaba Berk'), findsOneWidget);
@@ -104,7 +104,7 @@ void main() {
       await _fill(tester, 'Ad', 'Berk');
       await _fill(tester, 'E-posta', 'demo@roomly.app');
       await _fill(tester, 'Şifre', 'Sifre123');
-      await tester.tap(find.widgetWithText(FilledButton, 'Kayıt ol'));
+      await tester.tap(find.widgetWithText(FilledButton, 'KAYIT OL'));
       await _settle(tester);
 
       expect(
@@ -125,9 +125,29 @@ void main() {
     await _fill(tester, 'Ad', 'Berk');
     await _fill(tester, 'E-posta', 'berk@test.local');
     await _fill(tester, 'Şifre', 'sadeceharf');
-    await tester.tap(find.widgetWithText(FilledButton, 'Kayıt ol'));
+    await tester.tap(find.widgetWithText(FilledButton, 'KAYIT OL'));
     await tester.pump();
 
     expect(find.text('Şifre en az bir rakam içermelidir.'), findsOneWidget);
+  });
+
+  testWidgets('kayıttan bağlantı ve geri hareketi girişe döner AUTH-17', (
+    tester,
+  ) async {
+    await tester.pumpWidget(mockApp());
+    await _settle(tester);
+    await tester.tap(find.text('Hesabın yok mu? Kayıt ol'));
+    await _settle(tester);
+    expect(find.text('KAYIT OL'), findsOneWidget);
+
+    await tester.tap(find.text('Zaten hesabın var mı? Giriş yap'));
+    await _settle(tester);
+    expect(find.text('GİRİŞ YAP'), findsOneWidget);
+
+    await tester.tap(find.text('Hesabın yok mu? Kayıt ol'));
+    await _settle(tester);
+    await tester.binding.handlePopRoute();
+    await _settle(tester);
+    expect(find.text('GİRİŞ YAP'), findsOneWidget);
   });
 }
