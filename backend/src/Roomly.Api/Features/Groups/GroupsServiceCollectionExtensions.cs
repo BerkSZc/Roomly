@@ -39,6 +39,9 @@ public static class GroupsServiceCollectionExtensions
         services.AddScoped<IValidator<JoinGroupRequest>, JoinGroupRequestValidator>();
         services.AddScoped<IJoinGroupRepository, JoinGroupRepository>();
         services.AddScoped<JoinGroupService>();
+        services.AddScoped<IValidator<CreateSpaceRequest>, CreateSpaceValidator>();
+        services.AddScoped<ISpaceRepository, SpaceRepository>();
+        services.AddScoped<SpaceService>();
         return services;
     }
 }

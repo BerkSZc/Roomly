@@ -32,7 +32,10 @@ void main() {
       'Başak',
       'Berat',
     });
-    expect(appModules.every((m) => m.isPlaceholder), isTrue);
+    expect(appModules.where((m) => !m.isPlaceholder).map((m) => m.ucCode), [
+      'UC2',
+      'UC10',
+    ]);
   });
 
   test('gerçek registry kurallara uyar DASH-7', () {

@@ -2,6 +2,16 @@
 
 Her gereksinim kimliğini, onu tanımlayan spec'e ve onu doğrulayan testlere bağlar. Test adı kimlikle biter (`_DM04`, `_BND02`); bir testi bulmak için kimliği kodda arayın. Projenin gereksinim kimliği varsa (ör. `BND-02`) o kullanılır, yoksa spec'in AC'si spec önekiyle (`DM` = spec 0002).
 
+## UC2 / UC10 · Yaşam alanı
+
+| ID | Gereksinim | Testler |
+|---|---|---|
+| FR-02 | Kurucu yönetici olur, oturumu yeni grubu gösterir, eşzamanlı kurulum tek grup oluşturur | `SpaceEndpointTests.Create_ConcurrentRequests_ProduceOnlyOneGroup_FR02`, `Create_EnforcesCapacityAndAssignsFounder_BND02`, mobil `space_test.dart` |
+| BND-02 | Alan kurarken Ev 2–20, Yurt 2–6 kişi ve kurucu kapasiteye dahil | `SpaceEndpointTests.Create_EnforcesCapacityAndAssignsFounder_BND02`, mobil `space_test.dart` |
+| FR-10 | Üyelik sona erer ve son üyeyle alan arşivlenir; eşzamanlı katılım tutarlı kalır | `SpaceEndpointTests.Leave_ConcurrentJoin_PreservesMembershipAndArchiveConsistency_FR10`, `Leave_TransfersByJoinTimeThenUserId_AndArchivesLast_TRG02`, mobil `space_test.dart` |
+| TRG-02 | Yöneticilik en eski üyeye geçer; eşit zamanda kullanıcı kimliği sıralamayı belirler | `SpaceEndpointTests.Leave_TransfersByJoinTimeThenUserId_AndArchivesLast_TRG02` |
+| SEC-03 | Alan bilgisi ve ayrılma uç noktaları üye olmayana ve ayrılan üyeye 404 döner | `SpaceEndpointTests.Leave_TransfersByJoinTimeThenUserId_AndArchivesLast_TRG02` |
+
 ## Spec 0002 · Veri modeli
 
 Entegrasyon testleri `backend/tests/Roomly.Api.IntegrationTests/DataModel/`, unit testler `backend/tests/Roomly.Api.UnitTests/Features/Groups/` altında.

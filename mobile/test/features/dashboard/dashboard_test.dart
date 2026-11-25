@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:roomly/core/modules/app_module.dart';
 import 'package:roomly/core/modules/module_registry.dart';
 import 'package:roomly/core/storage/token_storage.dart';
+import 'package:roomly/features/dashboard/presentation/module_card.dart';
 
 import '../../support/fakes.dart';
 
@@ -92,19 +93,27 @@ void main() {
     await _settle(tester);
 
     expect(find.text('demo@roomly.app'), findsOneWidget);
-    for (final row in [
-      'UC6 · Yusuf',
-      'UC8 · Başak',
-      'UC9 · Başak',
-      'UC2 · Berat',
-      'UC10 · Berat',
-    ]) {
+    for (final row in ['UC6 · Yusuf', 'UC8 · Başak', 'UC9 · Başak']) {
       await tester.scrollUntilVisible(
         find.text(row),
         150,
         scrollable: find.byType(Scrollable).first,
       );
       expect(find.text(row), findsOneWidget);
+    }
+
+    for (final (title, label) in [
+      ('Alan Bilgileri', 'UC2 · Berat'),
+      ('Alandan Ayrıl', 'UC10 · Berat'),
+    ]) {
+      final tile = find.widgetWithText(ListTile, title);
+      await tester.scrollUntilVisible(
+        tile,
+        150,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(tester.widget<ListTile>(tile).subtitle, isNull);
+      expect(find.text(label), findsNothing);
     }
 
     await scrollAndTap(tester, find.text('Çıkış yap'));
@@ -119,17 +128,15 @@ void main() {
 
       for (final module in appModules) {
         await tester.scrollUntilVisible(
-          find.text(
-            'Geliştirme aşamasında · ${module.ucCode} · ${module.owner}',
-          ),
+          find.widgetWithText(ModuleCard, module.title),
           150,
           scrollable: find.byType(Scrollable).first,
         );
       }
 
-      await tester.tap(find.text('Geliştirme aşamasında · UC10 · Berat'));
+      await tester.tap(find.widgetWithText(ModuleCard, 'Alandan Ayrıl'));
       await _settle(tester);
-      expect(find.text('UC10 · Sorumlu: Berat'), findsOneWidget);
+      expect(find.text('Ayrılmayı Başlat'), findsOneWidget);
     },
   );
 
@@ -137,7 +144,7 @@ void main() {
     await _openDemo(tester);
     final router = GoRouter.of(tester.element(find.byType(NavigationBar)));
 
-    for (final module in appModules) {
+    for (final module in appModules.where((module) => module.isPlaceholder)) {
       router.go(module.path);
       await _settle(tester);
       expect(
