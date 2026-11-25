@@ -109,7 +109,7 @@ void main() {
 
     await scrollAndTap(tester, find.text('Çıkış yap'));
     await _settle(tester);
-    expect(find.text('Giriş yap'), findsOneWidget);
+    expect(find.text('GİRİŞ YAP'), findsOneWidget);
   });
 
   testWidgets(
@@ -193,7 +193,7 @@ void main() {
       find.widgetWithText(TextFormField, 'Şifre'),
       'Sifre123',
     );
-    await tester.tap(find.widgetWithText(FilledButton, 'Kayıt ol'));
+    await tester.tap(find.widgetWithText(FilledButton, 'KAYIT OL'));
     await _settle(tester);
 
     GoRouter.of(tester.element(find.text('Alan Kur'))).go('/expenses');
