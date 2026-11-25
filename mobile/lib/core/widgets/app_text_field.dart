@@ -1,7 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 
-/// Ortak form alanı. `obscure: true` verilince şifre alanı olur ve
-/// göster / gizle düğmesi çıkar.
+/// Ortak hap biçimli form alanı. `obscure: true` verilince şifre alanı olur ve
+/// göster / gizle düğmesi çıkar. `prefixIcon` alanın solunda ikon gösterir;
+/// `floatingLabel: false` etiketi yer tutucu gibi alanın içinde tutar.
 class AppTextField extends StatefulWidget {
   const AppTextField({
     super.key,
@@ -19,6 +20,8 @@ class AppTextField extends StatefulWidget {
     this.enabled = true,
     this.textCapitalization = TextCapitalization.none,
     this.maxLength,
+    this.prefixIcon,
+    this.floatingLabel = true,
   });
 
   final String label;
@@ -35,6 +38,8 @@ class AppTextField extends StatefulWidget {
   final bool enabled;
   final TextCapitalization textCapitalization;
   final int? maxLength;
+  final IconData? prefixIcon;
+  final bool floatingLabel;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -64,6 +69,19 @@ class _AppTextFieldState extends State<AppTextField> {
         hintText: widget.hint,
         errorText: widget.errorText,
         counterText: '',
+        floatingLabelBehavior: widget.floatingLabel
+            ? FloatingLabelBehavior.auto
+            : FloatingLabelBehavior.never,
+        prefixIcon: widget.prefixIcon == null
+            ? null
+            : Padding(
+                padding: const EdgeInsets.only(left: 20, right: 14),
+                child: Icon(widget.prefixIcon, size: 24),
+              ),
+        prefixIconConstraints: const BoxConstraints(
+          minWidth: 58,
+          minHeight: 24,
+        ),
         suffixIcon: widget.obscure
             ? IconButton(
                 tooltip: _obscured ? 'Şifreyi göster' : 'Şifreyi gizle',
