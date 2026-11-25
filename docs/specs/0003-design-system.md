@@ -1,17 +1,17 @@
 # 0003. Material 3 tabanlı tasarım sistemi ve temel bileşenler
 
-**Date**: 2026-11-22
+**Date**: 2026-11-22 (revize 2026-11-25: giriş / kayıt tasarımıyla marka paleti)
 **Status**: In Progress
 
 ## Summary
 
-Roomly'nin bütün ekranları tek bir Material 3 temasından (renk, yazı, boşluk kuralları) ve küçük bir ortak bileşen setinden beslenir. Ana renk teal (`#00796B`); Material 3 açık ve koyu paletin tamamını bu tek renkten türetir. Bileşenler `mobile/lib/core/theme/` ve `mobile/lib/core/widgets/` içinde durur, kurallar `mobile/design.md` dosyasında yazılıdır. Böylece 7 kişi kendi modülünü yazarken aynı görünümü renk ya da boşluk uydurmadan elde eder, henüz yapılmamış modüller de ortak bir "Geliştirme Aşamasında" ekranıyla görünür.
+Roomly'nin bütün ekranları tek bir Material 3 temasından (renk, yazı, boşluk kuralları) ve küçük bir ortak bileşen setinden beslenir. Marka dili koyu yeşil mürekkep (`#1F2E23`), açık yeşil zemin (`#F6F8F3`), lime ana düğme (`#A7F432`) ve hap (stadyum) biçimli alan ve düğmelerdir. Material 3 açık ve koyu paleti mürekkep renginden türetir, marka rolleri bu paletin üstüne yazılır. Bileşenler `mobile/lib/core/theme/` ve `mobile/lib/core/widgets/` içinde durur, kurallar `mobile/design.md` dosyasında yazılıdır. Böylece 7 kişi kendi modülünü yazarken aynı görünümü renk ya da boşluk uydurmadan elde eder, henüz yapılmamış modüller de ortak bir "Geliştirme Aşamasında" ekranıyla görünür.
 
 ## Context
 
 Scope #4. Mobil iskelet `ThemeData(colorSchemeSeed: Colors.teal)` ile açılıyor ve `mobile/AGENTS.md` "tema gelene kadar ekran başına özel stil yazma" diyor. UC1, dashboard ve UC3 ekranları bu dilimden hemen sonra yazılacak; arkasından 6 ekip arkadaşı kendi modüllerini ekleyecek. Ortak bir tema ve bileşen seti yoksa her ekran kendi rengini, boşluğunu ve hata görünümünü icat eder.
 
-Kısıtlar: yalnızca Android, yalnızca Türkçe (l10n yok), Riverpod, Material import'u `package:material_ui/material_ui.dart`. Ek paket eklemek `pubspec.yaml` (ortak dosya) onayı ister, bu yüzden tasarım sistemi ek paketsiz kurulmalı. Tasarım kaynağı olarak Figma ya da ekran görüntüsü yok; engineer "Material 3 tabanlı yön öner" ve ana renk olarak teal `#00796B` seçti.
+Kısıtlar: yalnızca Android, yalnızca Türkçe (l10n yok), Riverpod, Material import'u `package:material_ui/material_ui.dart`. Ek paket eklemek `pubspec.yaml` (ortak dosya) onayı ister, bu yüzden tasarım sistemi ek paketsiz kurulmalı. İlk sürümde tasarım kaynağı yoktu ve ana renk teal `#00796B` seçilmişti. 2026-11-25'te ekibin tasarımcısı giriş ve kayıt ekranlarının Flutter tasarımını verdi (renk paleti, CustomPaint bina logosu, hap biçimli alan ve düğmeler); bu revizyon o tasarımı tema ve ortak bileşenlere taşır.
 
 ## Requirements
 
@@ -21,16 +21,17 @@ Kısıtlar: yalnızca Android, yalnızca Türkçe (l10n yok), Riverpod, Material
 - Ekip olarak, henüz yapılmamış modüllerin hangi UC'ye ve kime ait olduğunu uygulamada görmek istiyoruz.
 
 **Acceptance criteria**:
-- **AC-1**: Uygulama `AppTheme.light()` ve `AppTheme.dark()` ile açılır; ikisi de `ColorScheme.fromSeed(seedColor: Color(0xFF00796B))` ile türetilir, `useMaterial3: true`, `themeMode: ThemeMode.system`.
-- **AC-2**: Boşluk ve köşe ölçüleri `AppSpacing` (`xs 4`, `sm 8`, `md 12`, `lg 16`, `xl 24`, `xxl 32`) ve `AppRadius` (`sm 8`, `md 12`, `lg 16`) sabitlerinden okunur; `AppSpacing.screen` (16) ekran kenar boşluğudur.
-- **AC-3**: Tema bileşen ayarları: `FilledButton` ve `OutlinedButton` en az 48 dp yükseklik ve `AppRadius.md` köşe; `InputDecorationTheme` dolgulu (`filled`), kenarlıklı (`OutlineInputBorder`, `AppRadius.md`); `CardTheme` `AppRadius.lg` köşe, gölge 0, `surfaceContainerLow` dolgu; `SnackBarTheme` `floating`.
-- **AC-4**: `AppTextField` etiket, ipucu, hata metni, klavye tipi, `textInputAction`, `autofillHints` ve validator alır. `obscure: true` verilince sağda göster / gizle düğmesi çıkar; düğmenin erişilebilirlik etiketi duruma göre "Şifreyi göster" ya da "Şifreyi gizle" olur ve basınca metin görünür olur.
+- **AC-1**: Uygulama `AppTheme.light()` ve `AppTheme.dark()` ile açılır; ikisi de `ColorScheme.fromSeed(seedColor: AppColors.seed)` (`#1F2E23`) ile türetilir, `useMaterial3: true`, `themeMode: ThemeMode.system`. İki temada `primaryContainer` lime `#A7F432`, `onPrimaryContainer` `#1F2E23`. Açık temada ayrıca `primary` ve `onSurface` `#1F2E23`, `surface` `#F6F8F3`, `outline` `#9E9E9E`.
+- **AC-2**: Boşluk ve köşe ölçüleri `AppSpacing` (`xs 4`, `sm 8`, `md 12`, `lg 16`, `xl 24`, `xxl 32`), `AppRadius` (`sm 8`, `md 12`, `lg 16`, `pill 28`) ve `AppSizes` (`minTouch 48`, `control 54`) sabitlerinden okunur; `AppSpacing.screen` (16) ekran kenar boşluğudur.
+- **AC-3**: Tema bileşen ayarları: `FilledButton` ve `OutlinedButton` `AppSizes.control` (54 dp) yükseklik, `StadiumBorder` (kenarlık `outline`), etiket 16 / w800; `FilledButton` dolgusu `primaryContainer`, yazısı `onPrimaryContainer`; `InputDecorationTheme` dolgulu (`filled`), kenarlıklı (`OutlineInputBorder`, `AppRadius.pill`; odakta `onSurface`, hatada `error`); `CardTheme` `AppRadius.lg` köşe, gölge 0, `surfaceContainerLow` dolgu; `SnackBarTheme` `floating`.
+- **AC-4**: `AppTextField` etiket, ipucu, hata metni, klavye tipi, `textInputAction`, `autofillHints` ve validator alır; `prefixIcon` soldaki ikonu, `floatingLabel: false` etiketin alanın içinde yer tutucu gibi kalmasını sağlar. `obscure: true` verilince sağda göster / gizle düğmesi çıkar; düğmenin erişilebilirlik etiketi duruma göre "Şifreyi göster" ya da "Şifreyi gizle" olur ve basınca metin görünür olur.
 - **AC-5**: `PrimaryButton` (dolgulu) ve `SecondaryButton` (kenarlıklı) tam genişliktedir. `isLoading: true` iken etiket yerine 20 dp `CircularProgressIndicator` gösterir ve `onPressed` çağrılmaz; `onPressed: null` iken devre dışıdır.
 - **AC-6**: Durum görünümleri: `LoadingView` (ortalanmış gösterge, isteğe bağlı mesaj), `ErrorView` (hata ikonu, mesaj, `onRetry` verilirse "Tekrar dene" düğmesi), `EmptyView` (ikon, başlık, isteğe bağlı açıklama ve eylem düğmesi).
 - **AC-7**: `showAppSnackBar(context, message, {isError})` mevcut snackbar'ı kapatıp yenisini gösterir; `isError: true` iken arka plan `colorScheme.error`, metin `onError`.
 - **AC-8**: `UnderDevelopmentScreen(title, ucCode, owner, icon)` başlığı AppBar'da, ortada ikonu, "Geliştirme Aşamasında" başlığını, `"<ucCode> · Sorumlu: <owner>"` satırını ve "Bu modül yakında burada olacak." açıklamasını gösterir.
 - **AC-9**: `mobile/design.md` renk, yazı, boşluk, köşe, bileşen listesi ve kullanım kurallarını (ekranlarda sabit renk ya da sayı yazılmaz, metinler Türkçe ve sabit, dokunma alanı en az 48 dp) anlatır.
 - **AC-10**: `lib/core/widgets/` ve `lib/core/theme/` dışındaki ekran kodunda `Color(0x...)`, `Colors.<renk>` ya da `TextStyle(fontSize: ...)` yoktur (iskeletteki `Colors.teal` kaldırılır); `SystemStatusScreen` ortak bileşenlere geçirilir.
+- **AC-11**: Marka bileşenleri: `RoomlyLogo(size, color?)` CustomPaint bina logosunu çizer (renk varsayılan `onSurface`, ekran okuyucudan gizli); `BrandHeader(subtitle, compact)` logo, "ROOMLY" başlığı ve `AppColors.limeAccent` (`#93E81E`) alt başlığı gösterir; `BrandFormScaffold(subtitle, children)` marka başlıklı, kaydırılabilir form ekranıdır (600 dp altı sıkı düzen, alanlar en fazla 520 dp). Giriş ve kayıt ekranları bunları kullanır.
 
 ## Options considered
 
@@ -55,13 +56,13 @@ Kendi buton, kart, input bileşenleri ve token sistemi.
 
 ## Decision
 
-**Chosen option**: Option 1: Material 3 teması ve ince ortak bileşen seti, ek paket olmadan.
+**Chosen option**: Option 1: Material 3 teması ve ince ortak bileşen seti, ek paket olmadan. 2026-11-25 revizyonu: tasarımcının marka paleti ve hap biçimi Option 1'in içinde, tema rolleri ve token'lar olarak uygulanır (Option 2'ye geçilmez, bileşenler yine Material).
 
-Tek seed rengi (`#00796B`) açık ve koyu temayı üretir; ekranlar yalnızca `Theme.of(context)`, `AppSpacing`, `AppRadius` ve `core/widgets` bileşenlerini kullanır.
+Tek seed rengi (`#1F2E23`) açık ve koyu temayı üretir, marka rolleri (zemin, mürekkep, lime) üstüne yazılır; ekranlar yalnızca `Theme.of(context)`, `AppSpacing`, `AppRadius` ve `core/widgets` bileşenlerini kullanır.
 
 ## Rationale
 
-Tasarım kaynağı olmadığı ve ekibin önceliği modüllerini hızla yazmak olduğu için en az kararla en tutarlı görünümü veren seçenek Material 3. Seed rengi tüm paleti erişilebilir kontrastla türettiği için kimse renk seçmek zorunda kalmaz. Paketsiz kalmak ortak dosya onayını ve bağımlılık riskini ortadan kaldırır; ileride özgün bir görünüm istenirse `AppTheme` tek yerde değişir.
+Tasarım kaynağı olmadığı ve ekibin önceliği modüllerini hızla yazmak olduğu için en az kararla en tutarlı görünümü veren seçenek Material 3. Seed rengi tüm paleti erişilebilir kontrastla türettiği için kimse renk seçmek zorunda kalmaz. Paketsiz kalmak ortak dosya onayını ve bağımlılık riskini ortadan kaldırır; ileride özgün bir görünüm istenirse `AppTheme` tek yerde değişir. Revizyon bunu doğruladı: marka paleti yalnızca `app_tokens.dart` ve `app_theme.dart` değişerek bütün ekranlara yayıldı.
 
 ## Feature design
 
@@ -69,8 +70,11 @@ Tasarım kaynağı olmadığı ve ekibin önceliği modüllerini hızla yazmak o
 
 | Dosya | İçerik |
 |---|---|
-| `lib/core/theme/app_tokens.dart` | `AppColors.seed`, `AppSpacing`, `AppRadius` |
-| `lib/core/theme/app_theme.dart` | `AppTheme.light()`, `AppTheme.dark()`; ortak `_build(Brightness)` |
+| `lib/core/theme/app_tokens.dart` | `AppColors` (`ink`/`seed`, `background`, `lime`, `limeAccent`, `fieldFill`, `fieldBorder`), `AppSpacing`, `AppRadius`, `AppSizes` |
+| `lib/core/theme/app_theme.dart` | `AppTheme.light()`, `AppTheme.dark()`, `AppTheme.colorScheme(Brightness)`; ortak `_build(Brightness)` |
+| `lib/core/widgets/roomly_logo.dart` | `RoomlyLogo` (CustomPaint) |
+| `lib/core/widgets/brand_header.dart` | `BrandHeader` |
+| `lib/core/widgets/brand_form_scaffold.dart` | `BrandFormScaffold` |
 | `lib/core/widgets/app_text_field.dart` | `AppTextField` |
 | `lib/core/widgets/app_buttons.dart` | `PrimaryButton`, `SecondaryButton` |
 | `lib/core/widgets/state_views.dart` | `LoadingView`, `ErrorView`, `EmptyView` |
@@ -85,6 +89,8 @@ Tasarım kaynağı olmadığı ve ekibin önceliği modüllerini hızla yazmak o
 | Yazı tipi | Roboto (sistem), M3 tip ölçeği değiştirilmez; başlıklar `titleLarge`/`headlineSmall`, gövde `bodyLarge`/`bodyMedium` | Inter (`google_fonts`, paket gerekir) |
 | Koyu tema | Var, `ThemeMode.system` | Yalnızca açık tema |
 | Hata rengi | `colorScheme.error` (seed'den) | Sabit kırmızı |
+| Koyu tema marka rolleri | Seed'den türer, yalnızca `primaryContainer` lime kalır | Açık temadaki sabit zemin ve mürekkep |
+| Marka alt başlığı | `limeAccent` `#93E81E`, yalnızca dekoratif (zeminde kontrast düşük) | `ink` |
 | Form düzeni | Dikey, alanlar arası `AppSpacing.lg`, alt kısımda tam genişlik birincil düğme | |
 | Uygulama çubuğu | `AppBarTheme(centerTitle: false)`, M3 varsayılanı | |
 | Gezinme çubuğu | M3 `NavigationBar` (dashboard spec'inde kullanılır) | `BottomNavigationBar` |
@@ -93,7 +99,7 @@ Tasarım kaynağı olmadığı ve ekibin önceliği modüllerini hızla yazmak o
 
 | Eylem | Değer | Kaynak |
 |---|---|---|
-| Tema | renkler | `ColorScheme.fromSeed(AppColors.seed, brightness)` |
+| Tema | renkler | `AppTheme.colorScheme(brightness)`: `ColorScheme.fromSeed(AppColors.seed)` + marka rolleri |
 | Placeholder | başlık, UC kodu, sorumlu, ikon | Constructor parametreleri; değerler dashboard spec'indeki modül listesinden |
 | Şifre düğmesi | etiket | `obscured` durumuna göre "Şifreyi göster" / "Şifreyi gizle" |
 
@@ -110,12 +116,13 @@ Kapsam dışı (yalnızca görsel katman).
 ### Critical test scenarios
 
 Widget testleri `mobile/test/core/` altında; ad `DS-<n>` ile biter.
-- Tema: `AppTheme.light().colorScheme` seed'den türemiş, M3 açık; koyu tema `Brightness.dark`, verifies **AC-1**, **AC-3**
-- Şifre alanı: başta gizli, düğmeye basınca görünür, etiket değişir, verifies **AC-4**
+- Tema: `AppTheme.light().colorScheme` marka rollerini taşır (`surface`, `onSurface`, `primary`, `primaryContainer`), M3 açık; koyu tema `Brightness.dark` ve lime `primaryContainer`; düğme `StadiumBorder`, alan `AppRadius.pill`, verifies **AC-1**, **AC-2**, **AC-3**
+- Şifre alanı: başta gizli, düğmeye basınca görünür, etiket değişir; önek ikonu görünür, `floatingLabel: false` etiketi içte tutar, verifies **AC-4**
 - Buton: yükleniyorken gösterge var, basınca callback çağrılmaz, verifies **AC-5**
 - ErrorView: "Tekrar dene" basınca `onRetry` çağrılır; `onRetry` yoksa düğme yok, verifies **AC-6**
 - Snackbar: hata rengiyle gösterilir, verifies **AC-7**
 - Placeholder: UC kodu ve sorumlu satırı görünür, verifies **AC-8**
+- Marka başlığı: logo, "ROOMLY" ve `limeAccent` alt başlık görünür, verifies **AC-11** (DS-09)
 
 ## Build plan
 
@@ -127,6 +134,7 @@ Tracer Bullet altında bu dilim, ince yolun mobil ucunun görsel temelidir; UC1 
 4. [x] `SystemStatusScreen`'i ortak bileşenlere geçir, sabit renkleri kaldır, satisfies **AC-10**
 5. [x] `mobile/design.md`, satisfies **AC-9**
 6. [x] Widget testleri ve `docs/traceability.md` DS satırları, satisfies **AC-1** ile **AC-8**
+7. [x] Revizyon: marka paleti ve hap biçimi tema ve token'lara, `RoomlyLogo` / `BrandHeader` / `BrandFormScaffold`, giriş ve kayıt ekranları yeni tasarıma, DS-01 / DS-04 / DS-09 testleri, satisfies **AC-1** ile **AC-4**, **AC-9**, **AC-11**
 
 ## Consequences
 
@@ -135,7 +143,8 @@ Tracer Bullet altında bu dilim, ince yolun mobil ucunun görsel temelidir; UC1 
 - Ek paket yok, `pubspec.yaml` değişmez.
 
 **Negative / tradeoffs**:
-- Görünüm standart Material 3, markaya özel değil.
+- Bileşenler hâlâ Material 3; marka hissi renk rolleri, hap biçimi ve logoyla sınırlı.
+- Lime alt başlık (`#93E81E`) açık zeminde düşük kontrastlı; yalnızca dekoratif metinde kullanılır.
 - `lib/core/` ortak klasör; bileşen değişikliği ekip onayı ister.
 
 **Neutral**:
