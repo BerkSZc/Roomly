@@ -150,16 +150,21 @@ Yönetici aktif kodu görür, paylaşır, iptal eder ya da yenisini üretir; yen
 **Done when:** silinen hesapla giriş yapılamıyor; kişisel veri tabloda kalmıyor; refresh token'lar iptal; yönetici silindiyse yöneticilik en eski üyeye geçiyor (SEC-07, TRG-02).
 - [ ] Build it: `/develop hesap silme ve anonimleştirme`
 
+## Yaşam alanı modülleri
+
+- [x] **Yaşam alanı kurma ve alan bilgileri (UC2)** · Berat
+- [x] **Alandan ayrılma ve alanı kapatma (UC10)** · Berat
+
+Doğrulayan testler [izlenebilirlik tablosunda](../traceability.md).
+
 ## Deferred
 Bu geçişin dışında, plan dürüst kalsın diye burada.
-- **Yaşam alanı kurma (UC2)**: Berat · placeholder'dan gerçek ekrana
 - **Gider ekleme ve bölüşme (UC4)**: Eda
 - **Borç görüntüleme ve hesaplaşma (UC5)**: Mehmet
 - **Kira, aidat ve fatura yönetimi (UC6)**: Yusuf
 - **Görev nöbeti yönetimi (UC7)**: Öykü
 - **Ortak alışveriş listesi (UC8)**: Başak
 - **Kural önerme ve oylama (UC9)**: Başak
-- **Alandan ayrılma ve alanı kapatma (UC10)**: Berat
 - **E-posta doğrulama, şifre sıfırlama**: kapsam dışı
 - **https App Links, iOS, birden fazla aktif grup**: kapsam dışı
 

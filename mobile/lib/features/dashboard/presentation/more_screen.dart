@@ -42,7 +42,9 @@ class MoreScreen extends ConsumerWidget {
             ListTile(
               leading: Icon(module.icon),
               title: Text(module.title),
-              subtitle: Text('${module.ucCode} · ${module.owner}'),
+              subtitle: module.isPlaceholder
+                  ? Text('${module.ucCode} · ${module.owner}')
+                  : null,
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.go(module.path),
             ),

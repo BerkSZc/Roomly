@@ -48,3 +48,10 @@ Bu sıra davet kodu üretimi (#10), katılım (#8), yönetici devri (TRG-02) ve 
 - Kod `InviteCodeHasher.Normalize` sonrası `InviteCodeFormat` (`^[A-Z0-9]{8,32}$`) ile kontrol edilir; katılımda kod tüketilmez.
 - Kod iptali ve üretimi (#10) ve grup kapatma (UC10) aynı grup kilidini almalı, aksi halde katılımla yarışır.
 - Kullanıcı başına dakikada 10 deneme (`RateLimiting:Join`). Düz kod loglanmaz.
+
+## Yaşam alanı kurma ve ayrılma (UC2 / UC10, Berat)
+
+- `POST /api/groups` ad, `Ev` / `Yurt` türü ve kapasite alır. Grup ve kurucu üyeliği birlikte kaydedilir. Tek üyelik kısıtında çakışma `ALREADY_IN_GROUP` (409) döner.
+- `GET /api/groups/{groupId}` yalnızca açık alanın üyesine ad, tür, kapasite, üye sayısı ve kendi rolünü verir.
+- `POST /api/groups/{groupId}/leave` grubu katılımla aynı satır kilidi altında günceller. Yönetici devrinde `joined_at, user_id` sırası kullanılır. Son üyede `closed_at` yazılır ve davet kodları kaldırılır. Yanıt `archived` ve `adminTransferred` alanlarını taşır.
+- Grup bilgisi ve ayrılma işlemi, açık alan üyeliği bulunmazsa `SPACE_NOT_FOUND` (404) döner.

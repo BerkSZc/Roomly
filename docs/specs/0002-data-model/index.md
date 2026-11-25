@@ -282,7 +282,7 @@ Tracer Bullet altında bu özellik ince yolun en alt katmanıdır: tek bir migra
 - [ ] Scope #10'u güncelle: yönetici kodu yalnızca üretildiği anda görür, tekrar paylaşmak için yeniden üretir (`/scope`).
 - [ ] Katılım spec'i (#8): kod formatı kontrolü yalnızca uzunluk ve `A-Z0-9`; üretilen kodlar Base32 alfabesinden ve deneme yanılmaya dayanacak en az uzunlukta; normalizasyon `InviteCodeHasher` ile aynı; hata önceliği `INVITE_REVOKED` > `INVITE_EXPIRED`.
 - [ ] Yerel ortam (#5): demo kodu idempotent upsert ile yazılır (`code_hash` üzerinden), `expires_at` uzak gelecekte, `created_by_user_id` demo yönetici; tekrar çalışınca kopya ya da 23505 yok.
-- [ ] UC10 (Berat): son üye ayrılınca grubun kapanması ve kapatmada satır kilidi bu spec'teki yazma sırasına uyar.
+- [x] UC10 (Berat): son üye ayrılınca grup kapanır ve kapatma, katılımla aynı satır kilidini kullanır. Doğrulama [izlenebilirlik tablosunda](../../traceability.md).
 - [ ] `Features/Groups/` ortak sahipliğini (Berk: davet kodu ve katılım, Berat: grup oluşturma ve kapatma) `CONTRIBUTING.md`'de ve modül README'sinde kayda geçir.
 - [ ] Diğer modüller için kural: `groups` ve `asp_net_users`'a FK'ler `Restrict`; tablolar `IEntityTypeConfiguration` ile kendi klasöründe; kısmi index'lerde yazma sırası (`/sync` ile `backend/AGENTS.md`'ye).
 - [ ] `EFCore.NamingConventions` 8.0.x serisinin en güncel sürümünü NuGet'te doğrula; Npgsql'in `Guid` PK'lere DB varsayılanı koymadığını migration SQL'inde kontrol et.

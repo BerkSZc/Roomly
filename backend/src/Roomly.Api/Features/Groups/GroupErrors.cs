@@ -29,4 +29,7 @@ public static class GroupErrors
 
     public static readonly Error CapacityExceeded = Error.Conflict(
         CapacityExceededCode, "Bu grup dolu.");
+
+    public static readonly Error SpaceNotFound = new(
+        "SPACE_NOT_FOUND", "Yaşam alanı bulunamadı.", StatusCodes.Status404NotFound);
 }
